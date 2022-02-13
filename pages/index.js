@@ -4,8 +4,8 @@ export default function IndexPage() {
   return (
     <div>
       Hello World.{' '}
-      <Link href="/about">
-        <a>About</a>
+      <Link href="/cadastrar-videoconferencia">
+        <a>Cadastrar Videoconferência</a>
       </Link>
     </div>
   )
