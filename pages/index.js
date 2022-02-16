@@ -7,9 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import ProTip from '../src/ProTip';
 import Link from '../src/Link';
-import Copyright from '../src/Copyright';
 
 export default function IndexPage() {
   return (
@@ -33,7 +31,7 @@ export default function IndexPage() {
         </Toolbar>
       </AppBar>
     </Box>
-    <Container maxWidth="sm">
+    <Container maxWidth="xl">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Hello World.{' '}
@@ -41,8 +39,6 @@ export default function IndexPage() {
         <Link href="/cadastrar-videoconferencia" color="secondary">
           Cadastrar Videoconferência
         </Link>
-        <ProTip />
-        <Copyright />
       </Box>
     </Container>
     </>
