@@ -7,7 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import Link from '../src/Link';
+import PublicTwoToneIcon from '@mui/icons-material/PublicTwoTone';
 
 export default function IndexPage() {
   return (
@@ -35,6 +37,7 @@ export default function IndexPage() {
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Hello World.{' '}
+        <PublicTwoToneIcon color="primary" />
         </Typography>
         <Link href="/cadastrar-videoconferencia" color="secondary">
           Cadastrar Videoconferência
