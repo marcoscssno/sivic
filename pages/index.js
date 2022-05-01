@@ -1,49 +1,23 @@
 import * as React from 'react';
+import Layout from '../components/Layout'
 import Container from '@mui/material/Container';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Link from '../src/Link';
-import PublicTwoToneIcon from '@mui/icons-material/PublicTwoTone';
 
 export default function IndexPage() {
   return (
-    <>
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Sivic
+    <Layout>
+      <Container maxWidth="xl">
+        <Box sx={{ my: 4 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Hello, World!
           </Typography>
-          <Button color="inherit">Entrar</Button>
-        </Toolbar>
-      </AppBar>
-    </Box>
-    <Container maxWidth="xl">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Hello World.{' '}
-        <PublicTwoToneIcon color="primary" />
-        </Typography>
-        <Link href="/cadastrar-videoconferencia" color="secondary">
-          Cadastrar Videoconferência
-        </Link>
-      </Box>
-    </Container>
-    </>
+          <Link href="/cadastrar-videoconferencia" color="secondary">
+            Cadastrar Videoconferência
+          </Link>
+        </Box>
+      </Container>
+    </Layout>
   )
 }
