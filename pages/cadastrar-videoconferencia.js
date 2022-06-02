@@ -7,7 +7,8 @@ import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-mui';
-import { DateTimePicker } from 'formik-mui-lab';
+import { DatePicker } from 'formik-mui-lab';
+import { TimePicker } from 'formik-mui-lab';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import moment from 'moment';
@@ -21,29 +22,41 @@ export default function CadastrarVideoconferenciaPage() {
                     <Typography variant="h4" component="h1" gutterBottom>
                         Cadastrar Videoconferência
                     </Typography>
+                    <br />
                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                         <Formik
                             initialValues={{
-                                data_hora: new Date(),
+                                data: new Date(),
+                                hora: new Date(),
                                 solicitante: '',
+                                sala: '',
                                 link: '',
                             }}
                             onSubmit={(values, { setSubmitting }) => {
                                 setTimeout(() => {
                                     setSubmitting(false);
                                     //alert(JSON.stringify(values, null, 2));
-                                    console.log(JSON.stringify(values));
+                                    console.log(values);
                                 }, 500);
                             }}
                         >
                             {({ submitForm, isSubmitting }) => (
                                 <Form>
                                     <Field
-                                        component={DateTimePicker}
-                                        name="data_hora"
-                                        type="datetime-local"
-                                        label="Data e Hora"
+                                        component={DatePicker}
+                                        type="date"
+                                        label="Data"
+                                        name="data"
                                     />
+                                    <br />
+                                    <br />
+                                    <Field
+                                        component={TimePicker}
+                                        type="time"
+                                        label="Hora"
+                                        name="hora"
+                                    />
+                                    <br />
                                     <br />
                                     <Field
                                         component={TextField}
@@ -52,6 +65,7 @@ export default function CadastrarVideoconferenciaPage() {
                                         name="solicitante"
                                     />
                                     <br />
+                                    <br />
                                     <Field
                                         component={TextField}
                                         type="text"
@@ -59,21 +73,23 @@ export default function CadastrarVideoconferenciaPage() {
                                         name="sala"
                                     />
                                     <br />
+                                    <br />
                                     <Field
                                         component={TextField}
                                         type="url"
                                         label="Link"
                                         name="link"
                                     />
-                                    {isSubmitting && <LinearProgress />}
                                     <br />
+                                    <br />
+                                    {isSubmitting && <LinearProgress />}
                                     <Button
                                         variant="contained"
                                         color="primary"
                                         disabled={isSubmitting}
                                         onClick={submitForm}
                                     >
-                                        Submit
+                                        Cadastrar
                                     </Button>
                                 </Form>
                             )}
