@@ -13,14 +13,24 @@ import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import moment from 'moment';
 import 'moment/locale/pt-br';
+import { useSelector, useDispatch } from 'react-redux';
+import Link from '../src/Link';
+import { cadastrar } from '../reducers/videoconferenciaSlice'
 
 export default function CadastrarVideoconferenciaPage() {
+    const videoconferenciasCount = useSelector(state =>
+        state.videoconferencia.videoconferencias.length
+    )
+    const dispatch = useDispatch();
     return (
         <Layout>
             <Container maxWidth="xl">
                 <Box sx={{ my: 4 }}>
+                    <Link href="/" color="secondary">
+                        Início
+                    </Link>
                     <Typography variant="h4" component="h1" gutterBottom>
-                        Cadastrar Videoconferência
+                        Cadastrar Videoconferência ({videoconferenciasCount})
                     </Typography>
                     <br />
                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
@@ -37,6 +47,7 @@ export default function CadastrarVideoconferenciaPage() {
                                     setSubmitting(false);
                                     //alert(JSON.stringify(values, null, 2));
                                     console.log(values);
+                                    dispatch(cadastrar(values));
                                 }, 500);
                             }}
                         >
@@ -83,6 +94,7 @@ export default function CadastrarVideoconferenciaPage() {
                                     <br />
                                     <br />
                                     {isSubmitting && <LinearProgress />}
+                                    <br />
                                     <Button
                                         variant="contained"
                                         color="primary"
