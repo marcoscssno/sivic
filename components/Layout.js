@@ -8,6 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import AddIcon from '@mui/icons-material/Add';
+import Link from '../src/Link'
 
 export default function Layout(props) {
     return (
@@ -25,9 +27,14 @@ export default function Layout(props) {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Sivic
+                            <Link href="/" color="inherit" underline="none">
+                                Sivic
+                            </Link>
                         </Typography>
-                        <Button color="inherit">Entrar</Button>
+
+                        <IconButton size="large" color="inherit" component={Link} href="/cadastrar-videoconferencia">
+                            <AddIcon></AddIcon>
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
             </Box>

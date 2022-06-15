@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
+import Grid from '@mui/material/Grid';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-mui';
 import { DatePicker } from 'formik-mui-lab';
@@ -26,18 +27,15 @@ export default function CadastrarVideoconferenciaPage() {
         <Layout>
             <Container maxWidth="xl">
                 <Box sx={{ my: 4 }}>
-                    <Link href="/" color="secondary">
-                        Início
-                    </Link>
                     <Typography variant="h4" component="h1" gutterBottom>
-                        Cadastrar Videoconferência ({videoconferenciasCount})
+                        Cadastrar Videoconferência
                     </Typography>
                     <br />
                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                         <Formik
                             initialValues={{
-                                data: new Date(),
-                                hora: new Date(),
+                                data: '',
+                                hora: '',
                                 solicitante: '',
                                 sala: '',
                                 link: '',
@@ -53,46 +51,56 @@ export default function CadastrarVideoconferenciaPage() {
                         >
                             {({ submitForm, isSubmitting }) => (
                                 <Form>
-                                    <Field
-                                        component={DatePicker}
-                                        type="date"
-                                        label="Data"
-                                        name="data"
-                                    />
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={2}>
+                                            <Field
+                                                component={DatePicker}
+                                                type="date"
+                                                label="Data"
+                                                name="data"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Field
+                                                component={TimePicker}
+                                                type="time"
+                                                label="Hora"
+                                                name="hora"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Field
+                                                component={TextField}
+                                                type="text"
+                                                label="Sala"
+                                                name="sala"
+                                            />
+                                        </Grid>
+                                    </Grid>
                                     <br />
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <Field
+                                                fullWidth
+                                                component={TextField}
+                                                type="text"
+                                                label="Solicitante"
+                                                name="solicitante"
+                                            />
+                                        </Grid>
+                                    </Grid>
                                     <br />
-                                    <Field
-                                        component={TimePicker}
-                                        type="time"
-                                        label="Hora"
-                                        name="hora"
-                                    />
-                                    <br />
-                                    <br />
-                                    <Field
-                                        component={TextField}
-                                        type="text"
-                                        label="Solicitante"
-                                        name="solicitante"
-                                    />
-                                    <br />
-                                    <br />
-                                    <Field
-                                        component={TextField}
-                                        type="text"
-                                        label="Sala"
-                                        name="sala"
-                                    />
-                                    <br />
-                                    <br />
-                                    <Field
-                                        component={TextField}
-                                        type="url"
-                                        label="Link"
-                                        name="link"
-                                    />
-                                    <br />
-                                    <br />
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <Field
+                                                fullWidth
+                                                component={TextField}
+                                                type="url"
+                                                label="Link"
+                                                name="link"
+                                            />
+                                        </Grid>
+                                    </Grid>
                                     {isSubmitting && <LinearProgress />}
                                     <br />
                                     <Button
