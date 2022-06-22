@@ -23,6 +23,10 @@ export default function CadastrarVideoconferenciaPage() {
         state.videoconferencia.videoconferencias.length
     )
     const dispatch = useDispatch();
+    const LinearProgressStyle = {
+        marginTop: '32px',
+        marginBottom: '16px'
+    }
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -101,7 +105,6 @@ export default function CadastrarVideoconferenciaPage() {
                                             />
                                         </Grid>
                                     </Grid>
-                                    {isSubmitting && <LinearProgress />}
                                     <br />
                                     <Button
                                         variant="contained"
@@ -111,6 +114,7 @@ export default function CadastrarVideoconferenciaPage() {
                                     >
                                         Cadastrar
                                     </Button>
+                                    {isSubmitting && <LinearProgress style={LinearProgressStyle}/>}
                                 </Form>
                             )}
                         </Formik>

@@ -7,6 +7,7 @@ import { CacheProvider } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import { Provider } from 'react-redux';
+import 'moment/locale/pt-br';
 import moment from 'moment';
 
 moment.locale('pt-br');
