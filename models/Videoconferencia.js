@@ -8,9 +8,10 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const videoconferenciaSchema = new Schema({
+    data_e_hora: Date,
     solicitante: String,
+    sala: String,
+    link: String,
 })
 
-const Videoconferencia = mongoose.model('Videoconferencia', videoconferenciaSchema)
-
-export default Videoconferencia
+export default mongoose.models.Videoconferencia || mongoose.model('Videoconferencia', videoconferenciaSchema)

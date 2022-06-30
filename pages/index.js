@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../components/Layout'
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -11,10 +11,12 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
 import Link from '../src/Link';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch, createDispatchHook } from 'react-redux'
 import { styled } from '@mui/material/styles';
 import moment from 'moment'
+import { fetchVideoconferencias } from '../reducers/videoconferenciaSlice'
 
 const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
@@ -24,7 +26,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function IndexPage() {
+    const dispatch = useDispatch()
     const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
+    const loading = useSelector(state => state.videoconferencia.loading)
+    const error = useSelector(state => state.videoconferencia.error)
+    useEffect(() => {
+        dispatch(fetchVideoconferencias())
+    }, [])
     const fabStyle = {
         position: 'fixed',
         bottom: 32,
@@ -44,15 +52,16 @@ export default function IndexPage() {
                         <Item>
                             {videoconferencias.length > 0 ? (
                                 <List>
-                                    {videoconferencias.map(videoconferencia => (
+                                    {videoconferencias.map((videoconferencia, index) => (
                                         <>
-                                            <ListItem secondaryAction={
+                                            <ListItem key={videoconferencia._id} secondaryAction={
                                                 <IconButton edge="end" component={Link} href={videoconferencia.link} target="_blank" rel="noopener">
                                                     <ArrowForwardIcon />
                                                 </IconButton>
                                             }>
-                                                <ListItemText primary={videoconferencia.solicitante} secondary={moment(videoconferencia.hora).format("H[h]mm[min]") + " - " + videoconferencia.sala} />
+                                                <ListItemText primary={videoconferencia.solicitante} secondary={moment(videoconferencia.data_e_hora).format("H[h]mm[min]") + " - " + videoconferencia.sala} />
                                             </ListItem>
+                                            {index + 1 < videoconferencias.length && <Divider /> }
                                         </>
                                     ))}
                                 </List>

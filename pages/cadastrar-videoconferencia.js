@@ -16,12 +16,14 @@ import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from '../src/Link';
-import { cadastrar } from '../reducers/videoconferenciaSlice'
+import { cadastrarVideoconferencia } from '../reducers/videoconferenciaSlice'
 
 export default function CadastrarVideoconferenciaPage() {
     const videoconferenciasCount = useSelector(state =>
         state.videoconferencia.videoconferencias.length
     )
+    const loading = useSelector(state => state.videoconferencia.loading)
+    const error = useSelector(state => state.videoconferencia.error)
     const dispatch = useDispatch();
     const LinearProgressStyle = {
         marginTop: '32px',
@@ -45,12 +47,20 @@ export default function CadastrarVideoconferenciaPage() {
                                 link: '',
                             }}
                             onSubmit={(values, { setSubmitting }) => {
-                                setTimeout(() => {
+                                try {
                                     setSubmitting(false);
-                                    //alert(JSON.stringify(values, null, 2));
-                                    console.log(values);
-                                    dispatch(cadastrar(values));
-                                }, 500);
+                                    const videoconferencia = {
+                                        data_e_hora: moment(moment(values.data).format('DD/MM/YYYY') + ' ' + moment(values.hora).format('HH:mm'), 'DD/MM/YYYY HH:mm', true),
+                                        solicitante: values.solicitante,
+                                        sala: values.sala,
+                                        link: values.link,
+                                    }
+                                    dispatch(cadastrarVideoconferencia(videoconferencia))
+                                }
+                                catch (error) {
+                                    console.log(error)
+                                    setSubmitting(false);
+                                }
                             }}
                         >
                             {({ submitForm, isSubmitting }) => (
@@ -114,7 +124,8 @@ export default function CadastrarVideoconferenciaPage() {
                                     >
                                         Cadastrar
                                     </Button>
-                                    {isSubmitting && <LinearProgress style={LinearProgressStyle}/>}
+                                    {(isSubmitting || loading) && <LinearProgress style={LinearProgressStyle} />}
+                                    {error != null && <p>{error}</p>}
                                 </Form>
                             )}
                         </Formik>
