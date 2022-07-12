@@ -27,14 +27,63 @@ const Item = styled(Paper)(({ theme }) => ({
     marginBottom: theme.spacing(4)
 }));
 
+const IsolatedMenu = props => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const { videoconferenciaId } = props
+
+    return (
+        <React.Fragment>
+            <IconButton
+                id="icon-button"
+                edge="end" aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}>
+                <MoreVertIcon />
+            </IconButton>
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'icon-button',
+                }}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+            >
+                <MenuItem
+                    onClick={handleClose}
+                    component={Link}
+                    href={`/videoconferencia/editar/${videoconferenciaId}`}
+                    target="_self"
+                    rel="noopener">
+                    Editar
+                </MenuItem>
+                <MenuItem onClick={handleClose}>Excluir</MenuItem>
+            </Menu>
+        </React.Fragment>
+    )
+}
+
 export default function IndexPage() {
     const dispatch = useDispatch()
     const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
     const loading = useSelector(state => state.videoconferencia.loading)
     const error = useSelector(state => state.videoconferencia.error)
-    useEffect(() => {
-        dispatch(fetchVideoconferencias())
-    }, [])
     const fabStyle = {
         position: 'fixed',
         bottom: 32,
@@ -46,14 +95,9 @@ export default function IndexPage() {
         marginTop: '16px',
         marginBottom: '16px'
     }
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    useEffect(() => {
+        dispatch(fetchVideoconferencias())
+    }, [])
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -63,50 +107,17 @@ export default function IndexPage() {
                             {videoconferencias.length > 0 ? (
                                 <List>
                                     {videoconferencias.map((videoconferencia, index) => (
-                                        <>
-                                            <ListItem key={videoconferencia._id} secondaryAction={
-                                                <IconButton
-                                                    id="icon-button"
-                                                    edge="end" aria-controls={open ? 'basic-menu' : undefined}
-                                                    aria-haspopup="true"
-                                                    aria-expanded={open ? 'true' : undefined}
-                                                    onClick={handleClick}>
-                                                    <MoreVertIcon />
-                                                </IconButton>
-                                            } disablePadding>
+                                        <React.Fragment key={index}>
+                                            <ListItem
+                                                secondaryAction={
+                                                    <IsolatedMenu videoconferenciaId={videoconferencia._id} />
+                                                } disablePadding>
                                                 <ListItemButton component={Link} href={videoconferencia.link} target="_blank" rel="noopener">
                                                     <ListItemText primary={videoconferencia.solicitante} secondary={moment(videoconferencia.data_e_hora).format("H[h]mm[min]") + " - " + videoconferencia.sala} />
                                                 </ListItemButton>
                                             </ListItem>
-                                            <Menu
-                                                id="basic-menu"
-                                                anchorEl={anchorEl}
-                                                open={open}
-                                                onClose={handleClose}
-                                                MenuListProps={{
-                                                    'aria-labelledby': 'icon-button',
-                                                }}
-                                                anchorOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'right',
-                                                }}
-                                                transformOrigin={{
-                                                    vertical: 'top',
-                                                    horizontal: 'right',
-                                                }}
-                                            >
-                                                <MenuItem
-                                                    onClick={handleClose}
-                                                    component={Link}
-                                                    href={`/videoconferencia/editar/${videoconferencia._id}`}
-                                                    target="_self"
-                                                    rel="noopener">
-                                                        Editar
-                                                </MenuItem>
-                                                <MenuItem onClick={handleClose}>Excluir</MenuItem>
-                                            </Menu>
                                             {index + 1 < videoconferencias.length && <Divider />}
-                                        </>
+                                        </React.Fragment>
                                     ))}
                                 </List>
                             ) : (

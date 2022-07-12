@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../../components/Layout'
 import Container from '@mui/material/Container';
@@ -16,13 +16,20 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
+import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers/videoconferenciaSlice';
 
 export default function EditarVideoconferenciaPage() {
     const router = useRouter()
     const { id } = router.query
+    const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia)
     const loading = useSelector(state => state.videoconferencia.loading)
+    const success = useSelector(state => state.videoconferencia.success)
     const error = useSelector(state => state.videoconferencia.error)
     const dispatch = useDispatch();
+    useEffect(() => {
+        /* Fix for bug when first rendering shows router.query.id as undefined and triggers Axios error */
+        id && dispatch(fetchVideoconferencia(id))
+    }, [router.query])
     const LinearProgressStyle = {
         marginTop: '32px',
         marginBottom: '16px'
@@ -37,24 +44,19 @@ export default function EditarVideoconferenciaPage() {
                     <br />
                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                         <Formik
-                            initialValues={{
-                                data: '',
-                                hora: '',
-                                solicitante: '',
-                                sala: '',
-                                link: '',
-                            }}
+                            enableReinitialize={true}
+                            initialValues={videoconferencia}
                             onSubmit={(values, { setSubmitting }) => {
                                 try {
                                     setSubmitting(false);
-                                    const videoconferencia = {
+                                    const newVideoconferencia = {
                                         data_e_hora: moment(moment(values.data).format('DD/MM/YYYY') + ' ' + moment(values.hora).format('HH:mm'), 'DD/MM/YYYY HH:mm', true),
                                         solicitante: values.solicitante,
                                         sala: values.sala,
                                         link: values.link,
                                     }
-                                    // dispatch(cadastrarVideoconferencia(videoconferencia))
-                                    console.log(videoconferencia)
+                                    dispatch(editarVideoconferencia({id: id, videoconferencia: newVideoconferencia}))
+                                    success && router.push('/')
                                 }
                                 catch (error) {
                                     console.log(error)
