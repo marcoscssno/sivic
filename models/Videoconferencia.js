@@ -12,6 +12,10 @@ const videoconferenciaSchema = new Schema({
     solicitante: String,
     sala: String,
     link: String,
+    excluida: {
+        type: Boolean,
+        default: false
+    },
 })
 
 export default mongoose.models.Videoconferencia || mongoose.model('Videoconferencia', videoconferenciaSchema)

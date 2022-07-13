@@ -19,7 +19,7 @@ import Link from '../src/Link';
 import { useSelector, useDispatch, createDispatchHook } from 'react-redux'
 import { styled } from '@mui/material/styles';
 import moment from 'moment'
-import { fetchVideoconferencias } from '../reducers/videoconferenciaSlice'
+import { fetchVideoconferencias, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -28,6 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const IsolatedMenu = props => {
+    const dispatch = useDispatch()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -36,6 +37,10 @@ const IsolatedMenu = props => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleExcluir = (id) => {
+        dispatch(excluirVideoconferencia(id))
+        setAnchorEl(null);
+    }
     const { videoconferenciaId } = props
 
     return (
@@ -73,7 +78,7 @@ const IsolatedMenu = props => {
                     rel="noopener">
                     Editar
                 </MenuItem>
-                <MenuItem onClick={handleClose}>Excluir</MenuItem>
+                <MenuItem onClick={() => handleExcluir(videoconferenciaId)}>Excluir</MenuItem>
             </Menu>
         </React.Fragment>
     )

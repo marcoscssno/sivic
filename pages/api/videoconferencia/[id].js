@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         case 'GET':
             try {
                 const { id } = req.query
-                const videoconferencia = await Videoconferencia.findOne({ "_id": id })
+                const videoconferencia = await Videoconferencia.findOne({ "_id": id, "excluida": false })
                 res.status(200).json({ success: true, data: videoconferencia })
             } catch (error) {
                 res.status(400).json({ success: false, error })
@@ -18,7 +18,16 @@ export default async function handler(req, res) {
             break
         case 'PUT':
             try {
-                const videoconferencia = await Videoconferencia.findByIdAndUpdate(req.query.id, req.body.videoconferencia)
+                const videoconferencia = await Videoconferencia.findOneAndUpdate({ "_id": req.query.id, "excluida": false }, req.body.videoconferencia)
+                res.status(200).json({ success: true, data: videoconferencia })
+            } catch (error) {
+                console.log(error)
+                res.status(400).json({ success: false, error: error })
+            }
+            break
+        case 'DELETE':
+            try {
+                const videoconferencia = await Videoconferencia.findOneAndUpdate({ "_id": req.query.id, "excluida": false }, { "excluida": true })
                 res.status(200).json({ success: true, data: videoconferencia })
             } catch (error) {
                 console.log(error)

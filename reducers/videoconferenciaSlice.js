@@ -99,6 +99,20 @@ export const videoconferenciaSlice = createSlice({
                 state.success = false
                 state.error = action.error.message
             })
+            .addCase(excluirVideoconferencia.pending, (state, action) => {
+                state.loading = true
+            })
+            .addCase(excluirVideoconferencia.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+                state.error = null
+                state.videoconferencias = state.videoconferencias.filter((videoconferencia) => videoconferencia._id !== action.payload.data._id)
+            })
+            .addCase(excluirVideoconferencia.rejected, (state, action) => {
+                state.loading = false
+                state.success = false
+                state.error = action.error.message
+            })
     }
 })
 
@@ -133,6 +147,14 @@ export const fetchVideoconferencia = createAsyncThunk(
     'videoconferencia/fetchVideoconferencia',
     async (id) => {
         const response = await axios.get(`/api/videoconferencia/${id}`)
+        return response.data
+    }
+)
+
+export const excluirVideoconferencia = createAsyncThunk(
+    'videoconferencia/excluirVideoconferencia',
+    async (id) => {
+        const response = await axios.delete(`/api/videoconferencia/${id}`)
         return response.data
     }
 )

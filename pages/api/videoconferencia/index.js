@@ -9,14 +9,13 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const videoconferencias = await Videoconferencia.find({})
+        const videoconferencias = await Videoconferencia.find({"excluida": false})
         res.status(200).json({ success: true, data: videoconferencias })
       } catch (error) {
         res.status(400).json({ success: false, error })
       }
       break
     case 'POST':
-      console.log(req.body)
       try {
         const videoconferencia = await Videoconferencia.create(req.body)
         res.status(200).json({ success: true, data: videoconferencia })
