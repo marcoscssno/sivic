@@ -15,6 +15,12 @@ import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 import Link from '../src/Link';
 import { useSelector, useDispatch, createDispatchHook } from 'react-redux'
 import { styled } from '@mui/material/styles';
@@ -28,8 +34,17 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const IsolatedMenu = props => {
+    const [AlertOpen, setAlertOpen] = useState(false);
+
+    const handleAlertOpen = () => {
+        setAlertOpen(true);
+    };
+
+    const handleAlertClose = () => {
+        setAlertOpen(false);
+    };
     const dispatch = useDispatch()
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -39,6 +54,7 @@ const IsolatedMenu = props => {
     };
     const handleExcluir = (id) => {
         dispatch(excluirVideoconferencia(id))
+        setAlertOpen(false);
         setAnchorEl(null);
     }
     const { videoconferenciaId } = props
@@ -78,8 +94,26 @@ const IsolatedMenu = props => {
                     rel="noopener">
                     Editar
                 </MenuItem>
-                <MenuItem onClick={() => handleExcluir(videoconferenciaId)}>Excluir</MenuItem>
+                <MenuItem onClick={handleAlertOpen}>Excluir</MenuItem>
             </Menu>
+            <Dialog
+                open={AlertOpen}
+                onClose={handleAlertClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Excluir agendamento de videoconferência?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleAlertClose}>Não</Button>
+                    <Button onClick={() => handleExcluir(videoconferenciaId)} autoFocus>
+                        Sim
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     )
 }
