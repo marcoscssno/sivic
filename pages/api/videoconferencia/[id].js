@@ -27,7 +27,7 @@ export default async function handler(req, res) {
             break
         case 'DELETE':
             try {
-                const videoconferencia = await Videoconferencia.findOneAndUpdate({ "_id": req.query.id, "excluida": false }, { "excluida": true })
+                const videoconferencia = await Videoconferencia.findOneAndUpdate({ "_id": req.query.id, "excluida": false }, { "excluida": true, "data_exclusao": new Date() })
                 res.status(200).json({ success: true, data: videoconferencia })
             } catch (error) {
                 console.log(error)
