@@ -19,13 +19,19 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { DatePicker } from 'formik-mui-lab';
+import AdapterMoment from '@mui/lab/AdapterMoment';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { Formik, Form, Field } from 'formik';
+import 'moment/locale/pt-br';
 import Link from '../src/Link';
 import { useSelector, useDispatch, createDispatchHook } from 'react-redux'
 import { styled } from '@mui/material/styles';
 import moment from 'moment'
-import { fetchVideoconferencias, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
+import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -143,6 +149,55 @@ export default function IndexPage() {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Item>
+                            <Toolbar>
+                                <Box sx={{ my: 2 }}>
+                                    <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
+                                        <Formik
+                                            initialValues={{
+                                                data: ''
+                                            }}
+                                            onSubmit={(values, { setSubmitting }) => {
+                                                try {
+                                                    setSubmitting(false);
+                                                    dispatch(fetchVideoconferenciasByDate(values.data))
+                                                }
+                                                catch (error) {
+                                                    console.log(error)
+                                                    setSubmitting(false);
+                                                }
+                                            }}
+                                        >
+                                            {({ submitForm, isSubmitting }) => (
+                                                <Form>
+                                                    <Box
+                                                        sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+                                                        <Field
+                                                            component={DatePicker}
+                                                            size="small"
+                                                            type="date"
+                                                            label="Data"
+                                                            name="data"
+                                                        />
+                                                        <Button
+                                                            variant="contained"
+                                                            color="primary"
+                                                            disabled={isSubmitting}
+                                                            onClick={submitForm}
+                                                            sx={{ my: 2, ml: 1 }}
+                                                        >
+                                                            Filtrar
+                                                        </Button>
+                                                    </Box>
+                                                </Form>
+                                            )}
+                                        </Formik>
+                                    </LocalizationProvider>
+                                </Box>
+                            </Toolbar>
+                        </Item>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Item>
                             {videoconferencias.length > 0 ? (
                                 <List>
                                     {videoconferencias.map((videoconferencia, index) => (
@@ -176,6 +231,6 @@ export default function IndexPage() {
                     <AddIcon />
                 </Fab>
             </Container>
-        </Layout>
+        </Layout >
     )
 }

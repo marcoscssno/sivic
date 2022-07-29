@@ -41,6 +41,20 @@ export const videoconferenciaSlice = createSlice({
                 state.success = false
                 state.error = action.error.message
             })
+            .addCase(fetchVideoconferenciasByDate.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(fetchVideoconferenciasByDate.fulfilled, (state, action) => {
+                state.loading = false
+                state.error = null
+                state.success = true
+                state.videoconferencias = action.payload.data
+            })
+            .addCase(fetchVideoconferenciasByDate.rejected, (state, action) => {
+                state.loading = false
+                state.success = false
+                state.error = action.error.message
+            })
             .addCase(fetchVideoconferencia.pending, (state) => {
                 state.loading = true
             })
@@ -139,6 +153,14 @@ export const fetchVideoconferencias = createAsyncThunk(
     'videoconferencia/fetchVideoconferencias',
     async () => {
         const response = await axios.get('/api/videoconferencia')
+        return response.data
+    }
+)
+
+export const fetchVideoconferenciasByDate = createAsyncThunk(
+    'videoconferencia/fetchVideoconferenciasByDate',
+    async (date) => {
+        const response = await axios.get(`/api/videoconferencia?date=${date}`)
         return response.data
     }
 )
