@@ -9,9 +9,9 @@ export default async function handler(req, res) {
 
   switch (method) {
     case 'GET':
+      const { date } = req.query
       try {
-        const { date } = req.query
-        if (date) {
+        if (date && (date !== "null" || date !== null)) {
           const beginDate = moment(date).format("YYYY-MM-DD")
           const endDate = moment(date).add(1, "days").format("YYYY-MM-DD")
           const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } })

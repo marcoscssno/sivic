@@ -134,12 +134,12 @@ export default function IndexPage() {
         bottom: 32,
         right: 32,
     }
-    const NaoHaVideoconferenciaStyle = {
-        marginRight: '32px',
-        marginLeft: '32px',
-        marginTop: '16px',
-        marginBottom: '16px'
-    }
+    const NaoHaVideoconferencia = styled(Box)(({ theme }) => ({
+        margin: theme.spacing(1),
+        marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(4),
+        padding: theme.spacing(3),
+    }));
     useEffect(() => {
         dispatch(fetchVideoconferencias())
     }, [])
@@ -154,12 +154,18 @@ export default function IndexPage() {
                                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                                         <Formik
                                             initialValues={{
-                                                data: ''
+                                                data: ""
                                             }}
                                             onSubmit={(values, { setSubmitting }) => {
+                                                const { data } = values
                                                 try {
                                                     setSubmitting(false);
-                                                    dispatch(fetchVideoconferenciasByDate(values.data))
+                                                    if (data == null) {
+                                                        dispatch(fetchVideoconferencias())
+                                                    }
+                                                    else {
+                                                        dispatch(fetchVideoconferenciasByDate(data))
+                                                    }
                                                 }
                                                 catch (error) {
                                                     console.log(error)
@@ -215,9 +221,11 @@ export default function IndexPage() {
                                     ))}
                                 </List>
                             ) : (
-                                <Typography variant="body1" style={NaoHaVideoconferenciaStyle}>
-                                    Não há videoconferência agendada.
-                                </Typography>
+                                <NaoHaVideoconferencia>
+                                    <Typography variant="body1">
+                                        Não há videoconferência agendada para os parâmetros selecionados.
+                                    </Typography>
+                                </NaoHaVideoconferencia>
                             )}
                         </Item>
                     </Grid>
