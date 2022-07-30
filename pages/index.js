@@ -213,7 +213,7 @@ export default function IndexPage() {
                                                     <IsolatedMenu videoconferenciaId={videoconferencia._id} />
                                                 } disablePadding>
                                                 <ListItemButton component={Link} href={videoconferencia.link} target="_blank" rel="noopener">
-                                                    <ListItemText primary={videoconferencia.solicitante} secondary={moment(videoconferencia.data_e_hora).format("H[h]mm[min]") + " - " + videoconferencia.sala} />
+                                                    <ListItemText primary={videoconferencia.solicitante} secondary={moment(videoconferencia.data_e_hora).format("D/M/YYYY") + " " + moment(videoconferencia.data_e_hora).format("H[h]mm[min]") + " - " + videoconferencia.sala} />
                                                 </ListItemButton>
                                             </ListItem>
                                             {index + 1 < videoconferencias.length && <Divider />}
