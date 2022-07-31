@@ -17,6 +17,15 @@ import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers/videoconferenciaSlice';
+import { object, date, string, url } from 'yup';
+
+const EditarVideoconferenciaSchema = object().shape({
+    data: date(),
+    hora: date(),
+    solicitante: string(),
+    sala: string(),
+    link: string().url("URL inválida"),
+});
 
 export default function EditarVideoconferenciaPage() {
     const router = useRouter()
@@ -46,6 +55,7 @@ export default function EditarVideoconferenciaPage() {
                         <Formik
                             enableReinitialize={true}
                             initialValues={videoconferencia}
+                            validationSchema={EditarVideoconferenciaSchema}
                             onSubmit={(values, { setSubmitting }) => {
                                 try {
                                     setSubmitting(false);
@@ -55,7 +65,7 @@ export default function EditarVideoconferenciaPage() {
                                         sala: values.sala,
                                         link: values.link,
                                     }
-                                    dispatch(editarVideoconferencia({id: id, videoconferencia: newVideoconferencia}))
+                                    dispatch(editarVideoconferencia({ id: id, videoconferencia: newVideoconferencia }))
                                     success && router.push('/')
                                 }
                                 catch (error) {

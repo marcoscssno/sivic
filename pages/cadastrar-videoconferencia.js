@@ -17,6 +17,15 @@ import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from '../src/Link';
 import { cadastrarVideoconferencia } from '../reducers/videoconferenciaSlice'
+import { object, date, string } from 'yup';
+
+const CadastrarVideoconferenciaSchema = object().shape({
+    data: date(),
+    hora: date(),
+    solicitante: string(),
+    sala: string(),
+    link: string().url("URL inválida"),
+});
 
 export default function CadastrarVideoconferenciaPage() {
     const videoconferenciasCount = useSelector(state =>
@@ -46,6 +55,7 @@ export default function CadastrarVideoconferenciaPage() {
                                 sala: '',
                                 link: '',
                             }}
+                            validationSchema={CadastrarVideoconferenciaSchema}
                             onSubmit={(values, { setSubmitting }) => {
                                 try {
                                     setSubmitting(false);
@@ -63,7 +73,7 @@ export default function CadastrarVideoconferenciaPage() {
                                 }
                             }}
                         >
-                            {({ submitForm, isSubmitting }) => (
+                            {({ errors, touched, submitForm, isSubmitting }) => (
                                 <Form>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}>
