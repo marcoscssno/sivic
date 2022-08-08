@@ -8,6 +8,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Tooltip from '@mui/material/Tooltip';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid';
@@ -33,6 +34,7 @@ import { styled } from '@mui/material/styles';
 import moment from 'moment'
 import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
 import ArrowForward from '@mui/icons-material/ArrowForward';
+import grey from '@mui/material/colors/grey'
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -65,7 +67,9 @@ const IsolatedMenu = props => {
         setAlertOpen(false);
         setAnchorEl(null);
     }
-    const { videoconferenciaId } = props
+    const { videoconferencia } = props
+    const id = videoconferencia._id
+    const { solicitante, data_e_hora, sala } = videoconferencia
 
     return (
         <React.Fragment>
@@ -99,7 +103,7 @@ const IsolatedMenu = props => {
                 <MenuItem
                     onClick={handleClose}
                     component={Link}
-                    href={`/videoconferencia/editar/${videoconferenciaId}`}
+                    href={`/videoconferencia/editar/${id}`}
                     target="_self"
                     rel="noopener">
                     Editar
@@ -114,12 +118,17 @@ const IsolatedMenu = props => {
             >
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Excluir agendamento de videoconferência?
+                        Excluir o agendamento de videoconferência abaixo?
+                        <br />
+                        <br />
+                        {solicitante}
+                        <br />
+                        {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleAlertClose}>Não</Button>
-                    <Button onClick={() => handleExcluir(videoconferenciaId)} autoFocus>
+                    <Button onClick={() => handleExcluir(id)} autoFocus>
                         Sim
                     </Button>
                 </DialogActions>
@@ -213,50 +222,58 @@ export default function IndexPage() {
                                     const { _id, data_e_hora, sala, solicitante, link } = videoconferencia
                                     return (
                                         <React.Fragment>
-                                            <Toolbar
-                                                key={index}
-                                            >
-                                                <Box
-                                                    component={Link}
-                                                    href={videoconferencia.link}
-                                                    target="_blank"
-                                                    rel="noopener"
-                                                    color="inherit"
-                                                    sx={{
-                                                        flexGrow: 1,
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        textDecoration: "none"
-                                                    }}
+                                            <Box sx={{
+                                                ':hover': {
+                                                    backgroundColor: grey[50],
+                                                    cursor: 'pointer',
+                                                    borderRadius: 'inherit'
+                                                }
+                                            }}>
+                                                <Toolbar
+                                                    key={index}
                                                 >
-                                                    <Typography
-                                                        variant="body"
-                                                        noWrap
+                                                    <Box
+                                                        component={Link}
+                                                        href={videoconferencia.link}
+                                                        target="_blank"
+                                                        rel="noopener"
+                                                        color="inherit"
+                                                        sx={{
+                                                            flexGrow: 1,
+                                                            display: "flex",
+                                                            flexDirection: "column",
+                                                            textDecoration: "none"
+                                                        }}
                                                     >
-                                                        {solicitante}
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="body2"
-                                                        noWrap
-                                                        sx={{ color: "grey.600" }}
+                                                        <Typography
+                                                            variant="body"
+                                                            noWrap
+                                                        >
+                                                            {solicitante}
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="body2"
+                                                            noWrap
+                                                            sx={{ color: "grey.600" }}
+                                                        >
+                                                            {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
+                                                        </Typography>
+                                                    </Box>
+                                                    <IsolatedMenu videoconferencia={videoconferencia} />
+                                                    <Button
+                                                        component={Link}
+                                                        href={videoconferencia.link}
+                                                        target="_blank"
+                                                        rel="noopener"
+                                                        color="primary"
+                                                        variant="contained"
+                                                        size="small"
+                                                        endIcon={<ArrowForward />}
                                                     >
-                                                        {sala}
-                                                    </Typography>
-                                                </Box>
-                                                <IsolatedMenu videoconferenciaId={_id} />
-                                                <Button
-                                                    color="primary"
-                                                    variant="contained"
-                                                    size="small"
-                                                    component={Link}
-                                                    href={videoconferencia.link}
-                                                    target="_blank"
-                                                    rel="noopener"
-                                                    endIcon={<ArrowForward />}
-                                                >
-                                                    Entrar
-                                                </Button>
-                                            </Toolbar>
+                                                        Entrar
+                                                    </Button>
+                                                </Toolbar>
+                                            </Box>
                                             {index + 1 < videoconferencias.length && <Divider />}
                                         </React.Fragment>
                                     )
@@ -271,14 +288,19 @@ export default function IndexPage() {
                         )}
                     </Grid>
                 </Grid>
-                <Fab
-                    color="primary"
-                    aria-label="add"
-                    style={fabStyle}
-                    component={Link}
-                    href="/cadastrar-videoconferencia">
-                    <AddIcon />
-                </Fab>
+                <Tooltip
+                    title="Cadastrar"
+                    placement="left"
+                >
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        style={fabStyle}
+                        component={Link}
+                        href="/cadastrar-videoconferencia">
+                        <AddIcon />
+                    </Fab>
+                </Tooltip>
             </Container>
         </Layout >
     )
