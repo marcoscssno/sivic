@@ -34,7 +34,6 @@ import { styled } from '@mui/material/styles';
 import moment from 'moment'
 import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import grey from '@mui/material/colors/grey'
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -221,17 +220,15 @@ export default function IndexPage() {
                                 {videoconferencias.map((videoconferencia, index) => {
                                     const { _id, data_e_hora, sala, solicitante, link } = videoconferencia
                                     return (
-                                        <React.Fragment>
+                                        <React.Fragment key={index}>
                                             <Box sx={{
                                                 ':hover': {
-                                                    backgroundColor: grey[50],
+                                                    backgroundColor: 'grey.50',
                                                     cursor: 'pointer',
                                                     borderRadius: 'inherit'
                                                 }
                                             }}>
-                                                <Toolbar
-                                                    key={index}
-                                                >
+                                                <Toolbar>
                                                     <Box
                                                         component={Link}
                                                         href={videoconferencia.link}
