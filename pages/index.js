@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout'
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Tooltip from '@mui/material/Tooltip';
@@ -23,6 +19,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 import { DatePicker } from 'formik-mui-lab';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -215,73 +213,81 @@ export default function IndexPage() {
                         </Item>
                     </Grid>
                     <Grid item xs={12}>
-                        {videoconferencias.length > 0 ? (
-                            <Item>
-                                {videoconferencias.map((videoconferencia, index) => {
-                                    const { _id, data_e_hora, sala, solicitante, link } = videoconferencia
-                                    return (
-                                        <React.Fragment key={index}>
-                                            <Box sx={{
-                                                ':hover': {
-                                                    backgroundColor: 'grey.50',
-                                                    cursor: 'pointer',
-                                                    borderRadius: 'inherit'
-                                                }
-                                            }}>
-                                                <Toolbar>
-                                                    <Box
-                                                        component={Link}
-                                                        href={videoconferencia.link}
-                                                        target="_blank"
-                                                        rel="noopener"
-                                                        color="inherit"
-                                                        sx={{
-                                                            flexGrow: 1,
-                                                            display: "flex",
-                                                            flexDirection: "column",
-                                                            textDecoration: "none"
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            variant="body"
-                                                            noWrap
-                                                        >
-                                                            {solicitante}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="body2"
-                                                            noWrap
-                                                            sx={{ color: "grey.600" }}
-                                                        >
-                                                            {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
-                                                        </Typography>
-                                                    </Box>
-                                                    <IsolatedMenu videoconferencia={videoconferencia} />
-                                                    <Button
-                                                        component={Link}
-                                                        href={videoconferencia.link}
-                                                        target="_blank"
-                                                        rel="noopener"
-                                                        color="primary"
-                                                        variant="contained"
-                                                        size="small"
-                                                        endIcon={<ArrowForward />}
-                                                    >
-                                                        Entrar
-                                                    </Button>
-                                                </Toolbar>
-                                            </Box>
-                                            {index + 1 < videoconferencias.length && <Divider />}
-                                        </React.Fragment>
-                                    )
-                                })}
-                            </Item>
+                        {loading ? (
+                            <Stack spacing={1}>
+                                <Skeleton variant="rectangular" fullWidth height={64} />
+                                <Skeleton variant="rectangular" fullWidth height={64} />
+                                <Skeleton variant="rectangular" fullWidth height={64} />
+                            </Stack>
                         ) : (
-                            <NaoHaVideoconferencia>
-                                <Typography variant="body1">
-                                    Não há videoconferência agendada para os parâmetros selecionados.
-                                </Typography>
-                            </NaoHaVideoconferencia>
+                            videoconferencias.length > 0 ? (
+                                <Item>
+                                    {videoconferencias.map((videoconferencia, index) => {
+                                        const { _id, data_e_hora, sala, solicitante, link } = videoconferencia
+                                        return (
+                                            <React.Fragment key={index}>
+                                                <Box sx={{
+                                                    ':hover': {
+                                                        backgroundColor: 'grey.50',
+                                                        cursor: 'pointer',
+                                                        borderRadius: 'inherit'
+                                                    }
+                                                }}>
+                                                    <Toolbar>
+                                                        <Box
+                                                            component={Link}
+                                                            href={videoconferencia.link}
+                                                            target="_blank"
+                                                            rel="noopener"
+                                                            color="inherit"
+                                                            sx={{
+                                                                flexGrow: 1,
+                                                                display: "flex",
+                                                                flexDirection: "column",
+                                                                textDecoration: "none"
+                                                            }}
+                                                        >
+                                                            <Typography
+                                                                variant="body"
+                                                                noWrap
+                                                            >
+                                                                {solicitante}
+                                                            </Typography>
+                                                            <Typography
+                                                                variant="body2"
+                                                                noWrap
+                                                                sx={{ color: "grey.600" }}
+                                                            >
+                                                                {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
+                                                            </Typography>
+                                                        </Box>
+                                                        <IsolatedMenu videoconferencia={videoconferencia} />
+                                                        <Button
+                                                            component={Link}
+                                                            href={videoconferencia.link}
+                                                            target="_blank"
+                                                            rel="noopener"
+                                                            color="primary"
+                                                            variant="contained"
+                                                            size="small"
+                                                            endIcon={<ArrowForward />}
+                                                        >
+                                                            Entrar
+                                                        </Button>
+                                                    </Toolbar>
+                                                </Box>
+                                                {index + 1 < videoconferencias.length && <Divider />}
+                                            </React.Fragment>
+                                        )
+                                    })}
+                                </Item>
+                            ) : (
+                                <NaoHaVideoconferencia>
+                                    <Typography variant="body1">
+                                        Não há videoconferência agendada para os parâmetros selecionados.
+                                    </Typography>
+                                </NaoHaVideoconferencia>
+                            )
                         )}
                     </Grid>
                 </Grid>
