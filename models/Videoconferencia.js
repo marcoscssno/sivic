@@ -1,14 +1,14 @@
-/**
- * Por Marcos Cassiano em 13 de fevereiro de 2022
- * Exemplo de Model para teste
-*/
-
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
 const videoconferenciaSchema = new Schema({
     data_e_hora: Date,
+    ano: Number,
+    mes: Number,
+    dia: Number,
+    hora: Number,
+    minuto: Number,
     solicitante: String,
     sala: String,
     link: String,
