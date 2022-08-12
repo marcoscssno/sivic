@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout'
+import Link from '../src/Link';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -21,17 +22,16 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import { Formik, Form, Field } from 'formik';
 import { DatePicker } from 'formik-mui-lab';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Formik, Form, Field } from 'formik';
+import moment from 'moment'
 import 'moment/locale/pt-br';
-import Link from '../src/Link';
 import { useSelector, useDispatch, createDispatchHook } from 'react-redux'
 import { styled } from '@mui/material/styles';
-import moment from 'moment'
 import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
-import ArrowForward from '@mui/icons-material/ArrowForward';
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -300,7 +300,7 @@ export default function IndexPage() {
                         aria-label="add"
                         style={fabStyle}
                         component={Link}
-                        href="/cadastrar-videoconferencia">
+                        href="/videoconferencia/cadastrar">
                         <AddIcon />
                     </Fab>
                 </Tooltip>

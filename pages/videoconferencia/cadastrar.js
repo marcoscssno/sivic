@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Layout from '../components/Layout'
+import Layout from '../../components/Layout'
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -15,8 +15,7 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from '../src/Link';
-import { cadastrarVideoconferencia } from '../reducers/videoconferenciaSlice'
+import { cadastrarVideoconferencia } from '../../reducers/videoconferenciaSlice'
 
 export default function CadastrarVideoconferenciaPage() {
     const videoconferenciasCount = useSelector(state =>
