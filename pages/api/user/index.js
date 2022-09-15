@@ -6,13 +6,20 @@ import bcrypt from 'bcrypt';
 const saltRounds = 12;
 
 export default async function handler(req, res) {
-    console.log("Request");
     const { method } = req
 
     await dbConnect()
 
     switch (method) {
-        // case 'GET':
+        case 'GET':
+            try {
+                const users = await User.find({});
+                res.status(200).json({ success: true, data: users })
+            }
+            catch (error) {
+                console.log(error)
+            }
+            break
         case 'POST':
             try {
                 const userData = {
