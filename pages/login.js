@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-mui';
 import { useSelector, useDispatch } from 'react-redux';
-import { createUser } from '../reducers/userSlice'
+import axios from 'axios';
 
 export default function LoginPage() {
     const loading = useSelector(state => state.user.loading)
@@ -32,14 +32,15 @@ export default function LoginPage() {
                                 username: '',
                                 password: ''
                             }}
-                            onSubmit={(values, { setSubmitting }) => {
+                            onSubmit={ async (values, { setSubmitting }) => {
                                 try {
                                     setSubmitting(false);
                                     const userData = {
                                         username: values.username,
                                         password: values.password
                                     }
-                                    console.log(userData)
+                                    const result = await axios.post('/api/login', userData);
+                                    console.log(result.data);
                                 }
                                 catch (error) {
                                     console.log(error)
