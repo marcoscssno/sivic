@@ -40,10 +40,10 @@ export default function LoginPage() {
                                         password: values.password
                                     }
                                     const result = await axios.post('/api/login', userData);
-                                    console.log(result.data);
+                                    alert(result.data.user.username + ' logged in successfully.');
                                 }
                                 catch (error) {
-                                    console.log(error)
+                                    alert(error.response.data)
                                     setSubmitting(false);
                                 }
                             }}
