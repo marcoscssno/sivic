@@ -6,10 +6,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import Grid from '@mui/material/Grid';
-import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-mui';
+import { useFormik } from 'formik';
+import TextField from '@mui/material/TextField';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import { TryOutlined } from '@mui/icons-material';
 
 export default function LoginPage() {
     const loading = useSelector(state => state.user.loading)
@@ -19,6 +20,45 @@ export default function LoginPage() {
         marginTop: '32px',
         marginBottom: '16px'
     }
+    const validate = (values) => {
+        const errors = {};
+        const { username, password } = values;
+        if (!username) {
+            errors.username = 'Campo obrigatório';
+        }
+        if (!password) {
+            errors.password = 'Campo obrigatório';
+        }
+        return errors;
+    }
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: ''
+        },
+        validate: validate,
+        onSubmit: async (values, { setSubmitting }) => {
+            try {
+                setSubmitting(false);
+                const userData = {
+                    username: values.username,
+                    password: values.password
+                }
+                const result = await axios.post('/api/login', userData);
+                if (result.data.user) {
+                    alert(result.data.user.username + ' logged in successfully.');
+                }
+                else {
+                    alert('Invalid credentials');
+                }
+            }
+            catch (error) {
+                alert(error.response.data)
+                setSubmitting(false);
+            }
+        }
+    })
+    const { handleSubmit, values, handleBlur, handleChange, touched, errors, isSubmitting } = formik;
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -27,44 +67,27 @@ export default function LoginPage() {
                         Login
                     </Typography>
                     <br />
-                        <Formik
-                            initialValues={{
-                                username: '',
-                                password: ''
-                            }}
-                            onSubmit={ async (values, { setSubmitting }) => {
-                                try {
-                                    setSubmitting(false);
-                                    const userData = {
-                                        username: values.username,
-                                        password: values.password
-                                    }
-                                    const result = await axios.post('/api/login', userData);
-                                    console.log(result.data);
-                                }
-                                catch (error) {
-                                    alert(error.response.data)
-                                    setSubmitting(false);
-                                }
-                            }}
-                        >
-                            {({ submitForm, isSubmitting }) => (
-                                <Form>
+                                <form onSubmit={handleSubmit}>
                                     <Grid container spacing={2}>
                                     <Grid item xs={2}>
-                                            <Field
-                                                component={TextField}
-                                                type="text"
+                                            <TextField
                                                 label="Nome de Usuário"
                                                 name="username"
+                                                value={values.username}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                error={touched.username && Boolean(errors.username)}
                                             />
                                         </Grid>
                                         <Grid item xs={2}>
-                                            <Field
-                                                component={TextField}
+                                            <TextField
                                                 type="password"
                                                 label="Senha"
                                                 name="password"
+                                                value={values.password}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                error={touched.password && Boolean(errors.password)}
                                             />
                                         </Grid>
                                     </Grid>
@@ -72,16 +95,14 @@ export default function LoginPage() {
                                     <Button
                                         variant="contained"
                                         color="primary"
+                                        type="submit"
                                         disabled={isSubmitting}
-                                        onClick={submitForm}
                                     >
-                                        Login
+                                        Entrar
                                     </Button>
                                     {(isSubmitting || loading) && <LinearProgress style={LinearProgressStyle} />}
                                     {error != null && <p>{error}</p>}
-                                </Form>
-                            )}
-                        </Formik>
+                                </form>
                 </Box>
             </Container>
         </Layout>
