@@ -11,8 +11,11 @@ import TextField from '@mui/material/TextField';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { TryOutlined } from '@mui/icons-material';
+import { useUser } from '../hooks/useUser';
+import Router from 'next/router'
 
 export default function LoginPage() {
+    useUser({ redirectTo: '/', redirectIfFound: true })
     const loading = useSelector(state => state.user.loading)
     const error = useSelector(state => state.user.error)
     const dispatch = useDispatch();
@@ -45,15 +48,13 @@ export default function LoginPage() {
                     password: values.password
                 }
                 const result = await axios.post('/api/login', userData);
-                if (result.data.user) {
-                    alert(result.data.user.username + ' logged in successfully.');
-                }
-                else {
-                    alert('Invalid credentials');
+                console.log(result);
+                if (result.data.done) {
+                    Router.push('/');
                 }
             }
             catch (error) {
-                alert(error.response.data)
+                console.log(error.response.data)
                 setSubmitting(false);
             }
         }

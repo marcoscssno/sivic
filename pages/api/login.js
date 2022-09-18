@@ -2,6 +2,7 @@ import passport from 'passport'
 import nextConnect from 'next-connect'
 import { localStrategy } from '../../lib/passport-local';
 import dbConnect from '../../utils/dbConnect';
+import { setLoginSession } from '../../lib/auth';
 
 const authenticate = (method, req, res) =>
     new Promise((resolve, reject) => {
@@ -22,8 +23,11 @@ export default nextConnect()
         await dbConnect()
         try {
             const user = await authenticate('local', req, res)
-            // To do: Register session
-            res.status(200).send({ done: true, user })
+            const session = { ...user }
+
+            await setLoginSession(res, session)
+
+            res.status(200).send({ done: true })
         } catch (error) {
             console.error(error)
             res.status(401).send(error.message)

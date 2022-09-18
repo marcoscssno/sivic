@@ -16,8 +16,10 @@ import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
 import { cadastrarVideoconferencia } from '../../reducers/videoconferenciaSlice'
+import { useUser } from '../../hooks/useUser';
 
 export default function CadastrarVideoconferenciaPage() {
+    useUser({ redirectTo: '/login' })
     const videoconferenciasCount = useSelector(state =>
         state.videoconferencia.videoconferencias.length
     )

@@ -32,6 +32,7 @@ import 'moment/locale/pt-br';
 import { useSelector, useDispatch, createDispatchHook } from 'react-redux'
 import { styled } from '@mui/material/styles';
 import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
+import { useUser } from '../hooks/useUser';
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -135,6 +136,7 @@ const IsolatedMenu = props => {
 }
 
 export default function IndexPage() {
+    useUser({ redirectTo: '/login' })
     const dispatch = useDispatch()
     const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
     const loading = useSelector(state => state.videoconferencia.loading)
@@ -215,9 +217,9 @@ export default function IndexPage() {
                     <Grid item xs={12}>
                         {loading ? (
                             <Stack spacing={1}>
-                                <Skeleton variant="rectangular" fullWidth height={64} />
-                                <Skeleton variant="rectangular" fullWidth height={64} />
-                                <Skeleton variant="rectangular" fullWidth height={64} />
+                                <Skeleton variant="rectangular" width="100%" height={64} />
+                                <Skeleton variant="rectangular" width="100%" height={64} />
+                                <Skeleton variant="rectangular" width="100%" height={64} />
                             </Stack>
                         ) : (
                             videoconferencias.length > 0 ? (

@@ -6,8 +6,10 @@ import Box from '@mui/material/Box';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserById } from '../../reducers/userSlice'
 import { useRouter } from 'next/router';
+import { useUser } from '../../hooks/useUser';
 
 export default function GetUserByIdPage() {
+    useUser({ redirectTo: '/login' })
     const router = useRouter()
     const { id } = router.query
     const loading = useSelector(state => state.user.loading)
