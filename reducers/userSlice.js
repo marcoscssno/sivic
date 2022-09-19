@@ -12,7 +12,9 @@ const initialState = {
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        authenticationIsLoading: (state, action) => { state.loading = action.payload }
+    },
     extraReducers(builder) {
         builder
             .addCase(getUsers.pending, (state, action) => {
@@ -83,5 +85,7 @@ export const getUserById = createAsyncThunk(
         return response.data
     }
 )
+
+export const { authenticationIsLoading } =  userSlice.actions
 
 export default userSlice.reducer

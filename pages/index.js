@@ -29,10 +29,10 @@ import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import moment from 'moment'
 import 'moment/locale/pt-br';
-import { useSelector, useDispatch, createDispatchHook } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { styled } from '@mui/material/styles';
 import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
-import { useUser } from '../hooks/useUser';
+import { useAuthentication } from '../hooks/useAuthentication';
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -136,7 +136,7 @@ const IsolatedMenu = props => {
 }
 
 export default function IndexPage() {
-    useUser({ redirectTo: '/login' })
+    useAuthentication({ redirectTo: '/login' })
     const dispatch = useDispatch()
     const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
     const loading = useSelector(state => state.videoconferencia.loading)

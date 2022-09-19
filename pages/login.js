@@ -11,11 +11,11 @@ import TextField from '@mui/material/TextField';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { TryOutlined } from '@mui/icons-material';
-import { useUser } from '../hooks/useUser';
+import { useAuthentication } from '../hooks/useAuthentication';
 import Router from 'next/router'
 
 export default function LoginPage() {
-    useUser({ redirectTo: '/', redirectIfFound: true })
+    useAuthentication({ redirectTo: '/', redirectIfFound: true })
     const loading = useSelector(state => state.user.loading)
     const error = useSelector(state => state.user.error)
     const dispatch = useDispatch();

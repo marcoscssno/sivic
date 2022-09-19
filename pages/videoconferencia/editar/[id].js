@@ -17,10 +17,10 @@ import moment from 'moment';
 import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers/videoconferenciaSlice';
-import { useUser } from '../../../hooks/useUser';
+import { useAuthentication } from '../../../hooks/useAuthentication';
 
 export default function EditarVideoconferenciaPage() {
-    useUser({ redirectTo: '/login' })
+    useAuthentication({ redirectTo: '/login' })
     const router = useRouter()
     const { id } = router.query
     const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia)
