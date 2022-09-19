@@ -18,7 +18,7 @@ export default function Layout(props) {
                                 Sivic
                             </Link>
                         </Typography>
-                        <Typography>
+                        <Typography sx={{ flexGrow: 1 }}>
                             {moment().format("dddd, D [de] MMMM [de] YYYY")}
                         </Typography>
                         <AuthenticationMenu />

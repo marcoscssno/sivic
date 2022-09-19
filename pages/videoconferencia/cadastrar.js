@@ -17,6 +17,7 @@ import 'moment/locale/pt-br';
 import { useSelector, useDispatch } from 'react-redux';
 import { cadastrarVideoconferencia } from '../../reducers/videoconferenciaSlice'
 import { useAuthentication } from '../../hooks/useAuthentication';
+import Router from 'next/router';
 
 export default function CadastrarVideoconferenciaPage() {
     useAuthentication({ redirectTo: '/login' })
@@ -25,6 +26,7 @@ export default function CadastrarVideoconferenciaPage() {
     )
     const loading = useSelector(state => state.videoconferencia.loading)
     const error = useSelector(state => state.videoconferencia.error)
+    const success = useSelector(state => state.videoconferencia.success)
     const dispatch = useDispatch();
     const LinearProgressStyle = {
         marginTop: '32px',
@@ -41,13 +43,13 @@ export default function CadastrarVideoconferenciaPage() {
                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                         <Formik
                             initialValues={{
-                                data: '',
-                                hora: '',
+                                data: moment().add(1, 'days'),
+                                hora: moment().add(1, 'days').hour(8).minute(30),
                                 solicitante: '',
                                 sala: '',
                                 link: '',
                             }}
-                            onSubmit={(values, { setSubmitting }) => {
+                            onSubmit={async (values, { setSubmitting }) => {
                                 try {
                                     setSubmitting(false);
                                     const videoconferencia = {
@@ -56,7 +58,8 @@ export default function CadastrarVideoconferenciaPage() {
                                         sala: values.sala,
                                         link: values.link,
                                     }
-                                    dispatch(cadastrarVideoconferencia(videoconferencia))
+                                    await dispatch(cadastrarVideoconferencia(videoconferencia))
+                                    Router.push('/');
                                 }
                                 catch (error) {
                                     console.log(error)
@@ -73,6 +76,7 @@ export default function CadastrarVideoconferenciaPage() {
                                                 type="date"
                                                 label="Data"
                                                 name="data"
+                                                autoFocus
                                             />
                                         </Grid>
                                         <Grid item xs={2}>
@@ -118,6 +122,7 @@ export default function CadastrarVideoconferenciaPage() {
                                     </Grid>
                                     <br />
                                     <Button
+                                        type="submit"
                                         variant="contained"
                                         color="primary"
                                         disabled={isSubmitting}
