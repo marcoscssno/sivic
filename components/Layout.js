@@ -38,7 +38,7 @@ export default function Layout(props) {
                         <Typography>
                             {moment().format("dddd, D [de] MMMM [de] YYYY")}
                         </Typography>
-                        {user && (
+                        {user ? (
                             <div>
                                 <Button
                                     variant="text"
@@ -71,6 +71,16 @@ export default function Layout(props) {
                                     <MenuItem onClick={handleClose} component={Link} href="/api/logout">Sair</MenuItem>
                                 </Menu>
                             </div>
+                        ) : (
+                            <Button
+                                component={Link}
+                                href="/login"
+                                variant="text"
+                                color="inherit"
+                                sx={{ ml: 1 }}
+                            >
+                                Entrar
+                            </Button>
                         )}
                     </Toolbar>
                 </AppBar>
