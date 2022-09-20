@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Layout from '../../components/Layout'
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -76,7 +76,7 @@ export default function CadastrarVideoconferenciaPage() {
                                                 type="date"
                                                 label="Data"
                                                 name="data"
-                                                autoFocus
+                                                autoFocus={true}
                                             />
                                         </Grid>
                                         <Grid item xs={2}>

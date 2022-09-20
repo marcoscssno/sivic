@@ -78,6 +78,7 @@ export default function LoginPage() {
                                                 onBlur={handleBlur}
                                                 onChange={handleChange}
                                                 error={touched.username && Boolean(errors.username)}
+                                                autoFocus={true}
                                             />
                                         </Grid>
                                         <Grid item xs={2}>
