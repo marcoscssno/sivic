@@ -45,8 +45,8 @@ export default function CadastrarVideoconferenciaPage() {
                             initialValues={{
                                 data: moment().add(1, 'days'),
                                 hora: moment().add(1, 'days').hour(8).minute(30),
-                                solicitante: '',
                                 sala: '',
+                                solicitante: '',
                                 link: '',
                             }}
                             onSubmit={async (values, { setSubmitting }) => {

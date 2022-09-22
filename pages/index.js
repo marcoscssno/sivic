@@ -1,6 +1,10 @@
+// React
 import React, { useEffect, useState } from 'react';
+// Other components
 import Layout from '../components/Layout'
+// Utils
 import Link from '../src/Link';
+// Mui
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -23,16 +27,23 @@ import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
+import PrintIcon from '@mui/icons-material/Print';
 import { Formik, Form, Field } from 'formik';
 import { DatePicker } from 'formik-mui-lab';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { styled } from '@mui/material/styles';
+// Moment
 import moment from 'moment'
 import 'moment/locale/pt-br';
+// Redux and Redux logic
 import { useSelector, useDispatch } from 'react-redux'
-import { styled } from '@mui/material/styles';
 import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
 import { useAuthentication } from '../hooks/useAuthentication';
+// PDFMake
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const Item = styled(Paper)(({ theme }) => ({
     margin: theme.spacing(1),
@@ -155,6 +166,24 @@ export default function IndexPage() {
     useEffect(() => {
         dispatch(fetchVideoconferencias())
     }, [])
+    const videoconferenciasForPrinting = () => {
+        return videoconferencias.map((videoconferencia, index) => {
+            const { solicitante, data_e_hora, sala } = videoconferencia;
+            return [solicitante, data_e_hora + " - " + sala]
+        })
+    }
+    console.log(videoconferenciasForPrinting())
+    const printContent = () => {
+        const docDefinition = {
+            content: [
+                'Relatório',
+                moment().format(),
+                ["Paragrafo 1", "Paragrafo 2", "etc."],
+                videoconferenciasForPrinting()                
+            ]
+        }
+        pdfMake.createPdf(docDefinition).open()
+    }
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -213,6 +242,11 @@ export default function IndexPage() {
                                 </Box>
                             </Toolbar>
                         </Item>
+                    </Grid>
+                    <Grid item xs={12} container direction="row" justifyContent="flex-end" alignItems="center">
+                        <Button variant="contained" onClick={() => printContent()} endIcon={<PrintIcon />}>
+                            Imprimir
+                        </Button>
                     </Grid>
                     <Grid item xs={12}>
                         {loading ? (
