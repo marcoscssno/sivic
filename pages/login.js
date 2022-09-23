@@ -48,7 +48,6 @@ export default function LoginPage() {
                     password: values.password
                 }
                 const result = await axios.post('/api/login', userData);
-                console.log(result);
                 if (result.data.done) {
                     Router.push('/');
                 }

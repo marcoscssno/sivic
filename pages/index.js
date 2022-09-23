@@ -166,24 +166,6 @@ export default function IndexPage() {
     useEffect(() => {
         dispatch(fetchVideoconferencias())
     }, [])
-    const videoconferenciasForPrinting = () => {
-        return videoconferencias.map((videoconferencia, index) => {
-            const { solicitante, data_e_hora, sala } = videoconferencia;
-            return [solicitante, data_e_hora + " - " + sala]
-        })
-    }
-    console.log(videoconferenciasForPrinting())
-    const printContent = () => {
-        const docDefinition = {
-            content: [
-                'Relatório',
-                moment().format(),
-                ["Paragrafo 1", "Paragrafo 2", "etc."],
-                videoconferenciasForPrinting()                
-            ]
-        }
-        pdfMake.createPdf(docDefinition).open()
-    }
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -191,7 +173,7 @@ export default function IndexPage() {
                     <Grid item xs={12}>
                         <Item>
                             <Toolbar>
-                                <Box sx={{ my: 2 }}>
+                                <Box sx={{ my: 2, flexGrow: 1 }}>
                                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                                         <Formik
                                             initialValues={{
@@ -240,13 +222,11 @@ export default function IndexPage() {
                                         </Formik>
                                     </LocalizationProvider>
                                 </Box>
+                                <Button variant="contained" component={Link} href="/imprimir/pauta" target="_blank" endIcon={<PrintIcon />}>
+                                    Imprimir
+                                </Button>
                             </Toolbar>
                         </Item>
-                    </Grid>
-                    <Grid item xs={12} container direction="row" justifyContent="flex-end" alignItems="center">
-                        <Button variant="contained" onClick={() => printContent()} endIcon={<PrintIcon />}>
-                            Imprimir
-                        </Button>
                     </Grid>
                     <Grid item xs={12}>
                         {loading ? (
