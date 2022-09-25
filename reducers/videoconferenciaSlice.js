@@ -10,6 +10,13 @@ const initialState = {
         hora: '',
         solicitante: '',
         sala: '',
+        presos: [
+            {
+                nome: '',
+                ala: '',
+                cela: ''
+            }
+        ],
         link: '',
     },
     loading: false,
@@ -67,6 +74,7 @@ export const videoconferenciaSlice = createSlice({
                     hora: action.payload.data.data_e_hora,
                     solicitante: action.payload.data.solicitante,
                     sala: action.payload.data.sala,
+                    presos: action.payload.data.presos,
                     link: action.payload.data.link
                 }
                 state.videoconferencia = formCompatibleVideoconferencia

@@ -1,6 +1,7 @@
 import dbConnect from '../../../utils/dbConnect'
 import Videoconferencia from '../../../models/Videoconferencia'
 import moment from 'moment'
+import { CatchingPokemonSharp } from '@mui/icons-material'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -27,9 +28,11 @@ export default async function handler(req, res) {
       break
     case 'POST':
       try {
+        console.log(req.body)
         const videoconferencia = await Videoconferencia.create(req.body)
         res.status(200).json({ success: true, data: videoconferencia })
       } catch (error) {
+        console.log(error)
         res.status(400).json({ success: false, error: error })
       }
       break

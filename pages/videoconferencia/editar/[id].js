@@ -1,26 +1,36 @@
+// React
 import React, { useEffect } from 'react'
+// Next
 import { useRouter } from 'next/router'
+// Other components
 import Layout from '../../../components/Layout'
+// Mui
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import Grid from '@mui/material/Grid';
-import { Formik, Form, Field } from 'formik';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+// Formik, formik-mui, formik-mui-lab
+import { Formik, Form, Field, FieldArray } from 'formik';
 import { TextField } from 'formik-mui';
 import { DatePicker } from 'formik-mui-lab';
 import { TimePicker } from 'formik-mui-lab';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+// Moment
 import moment from 'moment';
 import 'moment/locale/pt-br';
+// Redux, react-redux and Redux logic
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers/videoconferenciaSlice';
+// Custom hook
 import { useAuthentication } from '../../../hooks/useAuthentication';
 
 export default function EditarVideoconferenciaPage() {
-    useAuthentication({ redirectTo: '/login' })
+    const user = useAuthentication({ redirectTo: '/login' })
     const router = useRouter()
     const { id } = router.query
     const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia)
@@ -55,9 +65,12 @@ export default function EditarVideoconferenciaPage() {
                                         data_e_hora: moment(moment(values.data).format('DD/MM/YYYY') + ' ' + moment(values.hora).format('HH:mm'), 'DD/MM/YYYY HH:mm', true),
                                         solicitante: values.solicitante,
                                         sala: values.sala,
+                                        presos: values.presos,
                                         link: values.link,
+                                        lastUpdatedAt: moment(),
+                                        lastUpdatedBy: user._id
                                     }
-                                    dispatch(editarVideoconferencia({id: id, videoconferencia: newVideoconferencia}))
+                                    dispatch(editarVideoconferencia({ id: id, videoconferencia: newVideoconferencia }))
                                     success && router.push('/')
                                 }
                                 catch (error) {
@@ -66,7 +79,12 @@ export default function EditarVideoconferenciaPage() {
                                 }
                             }}
                         >
-                            {({ submitForm, isSubmitting }) => (
+                            {({ submitForm, isSubmitting, values }) => {
+                                console.log('values');
+                                console.log(values);
+                                console.log('videoconferencia');
+                                console.log(videoconferencia);
+                                return (
                                 <Form>
                                     <Grid container spacing={2}>
                                         <Grid item xs={2}>
@@ -75,6 +93,7 @@ export default function EditarVideoconferenciaPage() {
                                                 type="date"
                                                 label="Data"
                                                 name="data"
+                                                autoFocus={true}
                                             />
                                         </Grid>
                                         <Grid item xs={2}>
@@ -107,6 +126,71 @@ export default function EditarVideoconferenciaPage() {
                                         </Grid>
                                     </Grid>
                                     <br />
+                                    <FieldArray name="presos">
+                                        {({ insert, remove, push }) => (
+                                            <>
+                                                {values.presos.length > 0 &&
+                                                    values.presos.map((preso, index) => (
+                                                        <React.Fragment key={index}>
+                                                            <Grid container spacing={2} sx={{ alignItems: "center" }}>
+                                                                <Grid item xs={6}>
+                                                                    <Field
+                                                                        fullWidth
+                                                                        component={TextField}
+                                                                        type="text"
+                                                                        label="Nome"
+                                                                        name={`presos.${index}.nome`}
+                                                                    />
+                                                                </Grid>
+                                                                <Grid item xs={3}>
+                                                                    <Field
+                                                                        fullWidth
+                                                                        component={TextField}
+                                                                        type="text"
+                                                                        label="Ala"
+                                                                        name={`presos.${index}.ala`}
+                                                                    />
+                                                                </Grid>
+                                                                <Grid item xs={1}>
+                                                                    <Field
+                                                                        fullWidth
+                                                                        component={TextField}
+                                                                        type="text"
+                                                                        label="Cela"
+                                                                        name={`presos.${index}.cela`}
+                                                                    />
+                                                                </Grid>
+                                                                <Grid item xs={1}>
+                                                                    <Button
+                                                                        variant="contained"
+                                                                        color="primary"
+                                                                        onClick={() => remove(index)}
+                                                                    >
+                                                                        <RemoveIcon />
+                                                                    </Button>
+                                                                </Grid>
+                                                                {index == values.presos.length - 1 && (
+                                                                    <Grid item xs={1}>
+                                                                        <Button
+                                                                            variant="contained"
+                                                                            color="primary"
+                                                                            onClick={() => push({ nome: '', ala: '', cela: '' })}
+                                                                        >
+                                                                            <AddIcon />
+                                                                        </Button>
+                                                                    </Grid>
+                                                                )}
+                                                            </Grid>
+                                                            {index + 1 < values.presos.length && (
+                                                                <br />
+                                                            )}
+                                                        </React.Fragment>
+                                                    ))
+                                                }
+                                            </>
+                                        )}
+                                    </FieldArray>
+                                    <br />
                                     <Grid container spacing={2}>
                                         <Grid item xs={6}>
                                             <Field
@@ -120,17 +204,18 @@ export default function EditarVideoconferenciaPage() {
                                     </Grid>
                                     <br />
                                     <Button
+                                        type="submit"
                                         variant="contained"
                                         color="primary"
                                         disabled={isSubmitting}
                                         onClick={submitForm}
                                     >
-                                        Salvar
+                                        Editar
                                     </Button>
                                     {(isSubmitting || loading) && <LinearProgress style={LinearProgressStyle} />}
                                     {error != null && <p>{error}</p>}
                                 </Form>
-                            )}
+                            )}}
                         </Formik>
                     </LocalizationProvider>
                 </Box>

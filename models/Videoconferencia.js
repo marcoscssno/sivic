@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -9,9 +9,28 @@ const videoconferenciaSchema = new Schema({
     dia: Number,
     hora: Number,
     minuto: Number,
+    duracao: {
+        type: Number,
+        default: 60
+    },
     solicitante: String,
     sala: String,
+    presos: [{
+        nome: String,
+        ala: String,
+        cela: String
+    }],
     link: String,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    createdBy: ObjectId,
+    lastUpdatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    lastUpdatedBy: ObjectId,
     excluida: {
         type: Boolean,
         default: false
