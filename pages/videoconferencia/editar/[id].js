@@ -34,13 +34,22 @@ export default function EditarVideoconferenciaPage() {
     const router = useRouter()
     const { id } = router.query
     const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia)
-    console.log(videoconferencia);
+    let presos = [
+        {
+            nome: '',
+            ala: '',
+            cela: ''
+        }
+    ]
+    if (videoconferencia.presos.length > 0) {
+        presos = videoconferencia.presos;
+    }
     const formCompatibleVideoconferencia = {
         data: videoconferencia.data_e_hora,
         hora: videoconferencia.data_e_hora,
         solicitante: videoconferencia.solicitante,
         sala: videoconferencia.sala,
-        presos: videoconferencia.presos,
+        presos: presos,
         link: videoconferencia.link
     }
     const loading = useSelector(state => state.videoconferencia.loading)
@@ -96,137 +105,138 @@ export default function EditarVideoconferenciaPage() {
                         >
                             {({ submitForm, isSubmitting, values }) => {
                                 return (
-                                <Form>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={2}>
-                                            <Field
-                                                component={DatePicker}
-                                                type="date"
-                                                label="Data"
-                                                name="data"
-                                                autoFocus={true}
-                                            />
+                                    <Form>
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={2}>
+                                                <Field
+                                                    component={DatePicker}
+                                                    type="date"
+                                                    label="Data"
+                                                    name="data"
+                                                    autoFocus={true}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <Field
+                                                    component={TimePicker}
+                                                    type="time"
+                                                    label="Hora"
+                                                    name="hora"
+                                                />
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <Field
+                                                    component={TextField}
+                                                    type="text"
+                                                    label="Sala"
+                                                    name="sala"
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={2}>
-                                            <Field
-                                                component={TimePicker}
-                                                type="time"
-                                                label="Hora"
-                                                name="hora"
-                                            />
+                                        <br />
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={6}>
+                                                <Field
+                                                    fullWidth
+                                                    component={TextField}
+                                                    type="text"
+                                                    label="Solicitante"
+                                                    name="solicitante"
+                                                />
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={2}>
-                                            <Field
-                                                component={TextField}
-                                                type="text"
-                                                label="Sala"
-                                                name="sala"
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <br />
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={6}>
-                                            <Field
-                                                fullWidth
-                                                component={TextField}
-                                                type="text"
-                                                label="Solicitante"
-                                                name="solicitante"
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <br />
-                                    <FieldArray name="presos">
-                                        {({ insert, remove, push }) => (
-                                            <>
-                                                {values.presos.length > 0 &&
-                                                    values.presos.map((preso, index) => (
-                                                        <React.Fragment key={index}>
-                                                            <Grid container spacing={2} sx={{ alignItems: "center" }}>
-                                                                <Grid item xs={6}>
-                                                                    <Field
-                                                                        fullWidth
-                                                                        component={TextField}
-                                                                        type="text"
-                                                                        label="Nome"
-                                                                        name={`presos.${index}.nome`}
-                                                                    />
-                                                                </Grid>
-                                                                <Grid item xs={3}>
-                                                                    <Field
-                                                                        fullWidth
-                                                                        component={TextField}
-                                                                        type="text"
-                                                                        label="Ala"
-                                                                        name={`presos.${index}.ala`}
-                                                                    />
-                                                                </Grid>
-                                                                <Grid item xs={1}>
-                                                                    <Field
-                                                                        fullWidth
-                                                                        component={TextField}
-                                                                        type="text"
-                                                                        label="Cela"
-                                                                        name={`presos.${index}.cela`}
-                                                                    />
-                                                                </Grid>
-                                                                <Grid item xs={1}>
-                                                                    <Button
-                                                                        variant="contained"
-                                                                        color="primary"
-                                                                        onClick={() => remove(index)}
-                                                                    >
-                                                                        <RemoveIcon />
-                                                                    </Button>
-                                                                </Grid>
-                                                                {index == values.presos.length - 1 && (
+                                        <br />
+                                        <FieldArray name="presos">
+                                            {({ insert, remove, push }) => (
+                                                <>
+                                                    {values.presos.length > 0 &&
+                                                        values.presos.map((preso, index) => (
+                                                            <React.Fragment key={index}>
+                                                                <Grid container spacing={2} sx={{ alignItems: "center" }}>
+                                                                    <Grid item xs={6}>
+                                                                        <Field
+                                                                            fullWidth
+                                                                            component={TextField}
+                                                                            type="text"
+                                                                            label="Nome"
+                                                                            name={`presos.${index}.nome`}
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid item xs={3}>
+                                                                        <Field
+                                                                            fullWidth
+                                                                            component={TextField}
+                                                                            type="text"
+                                                                            label="Ala"
+                                                                            name={`presos.${index}.ala`}
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid item xs={1}>
+                                                                        <Field
+                                                                            fullWidth
+                                                                            component={TextField}
+                                                                            type="text"
+                                                                            label="Cela"
+                                                                            name={`presos.${index}.cela`}
+                                                                        />
+                                                                    </Grid>
                                                                     <Grid item xs={1}>
                                                                         <Button
                                                                             variant="contained"
                                                                             color="primary"
-                                                                            onClick={() => push({ nome: '', ala: '', cela: '' })}
+                                                                            onClick={() => remove(index)}
                                                                         >
-                                                                            <AddIcon />
+                                                                            <RemoveIcon />
                                                                         </Button>
                                                                     </Grid>
+                                                                    {index == values.presos.length - 1 && (
+                                                                        <Grid item xs={1}>
+                                                                            <Button
+                                                                                variant="contained"
+                                                                                color="primary"
+                                                                                onClick={() => push({ nome: '', ala: '', cela: '' })}
+                                                                            >
+                                                                                <AddIcon />
+                                                                            </Button>
+                                                                        </Grid>
+                                                                    )}
+                                                                </Grid>
+                                                                {index + 1 < values.presos.length && (
+                                                                    <br />
                                                                 )}
-                                                            </Grid>
-                                                            {index + 1 < values.presos.length && (
-                                                                <br />
-                                                            )}
-                                                        </React.Fragment>
-                                                    ))
-                                                }
-                                            </>
-                                        )}
-                                    </FieldArray>
-                                    <br />
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={6}>
-                                            <Field
-                                                fullWidth
-                                                component={TextField}
-                                                type="url"
-                                                label="Link"
-                                                name="link"
-                                            />
+                                                            </React.Fragment>
+                                                        ))
+                                                    }
+                                                </>
+                                            )}
+                                        </FieldArray>
+                                        <br />
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={6}>
+                                                <Field
+                                                    fullWidth
+                                                    component={TextField}
+                                                    type="url"
+                                                    label="Link"
+                                                    name="link"
+                                                />
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                    <br />
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        disabled={isSubmitting}
-                                        onClick={() => submitForm}
-                                    >
-                                        Editar
-                                    </Button>
-                                    {(isSubmitting || loading) && <LinearProgress style={LinearProgressStyle} />}
-                                    {error != null && <p>{error}</p>}
-                                </Form>
-                            )}}
+                                        <br />
+                                        <Button
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={isSubmitting}
+                                            onClick={() => submitForm}
+                                        >
+                                            Editar
+                                        </Button>
+                                        {(isSubmitting || loading) && <LinearProgress style={LinearProgressStyle} />}
+                                        {error != null && <p>{error}</p>}
+                                    </Form>
+                                )
+                            }}
                         </Formik>
                     </LocalizationProvider>
                 </Box>
