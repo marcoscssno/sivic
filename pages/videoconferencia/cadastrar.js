@@ -86,7 +86,7 @@ export default function CadastrarVideoconferenciaPage() {
                                         lastUpdatedBy: user._id
                                     }
                                     await dispatch(cadastrarVideoconferencia(videoconferencia))
-                                    // Router.push('/');
+                                    Router.push('/');
                                 }
                                 catch (error) {
                                     console.log(error)

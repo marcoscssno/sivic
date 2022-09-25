@@ -33,6 +33,8 @@ import { DatePicker } from 'formik-mui-lab';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { styled } from '@mui/material/styles';
+import Badge from '@mui/material/Badge';
+import PersonIcon from '@mui/icons-material/Person';
 // Moment
 import moment from 'moment'
 import 'moment/locale/pt-br';
@@ -239,7 +241,7 @@ export default function IndexPage() {
                             videoconferencias.length > 0 ? (
                                 <Item>
                                     {videoconferencias.map((videoconferencia, index) => {
-                                        const { _id, data_e_hora, sala, solicitante, link } = videoconferencia
+                                        const { data_e_hora, sala, solicitante, presos, link } = videoconferencia
                                         return (
                                             <React.Fragment key={index}>
                                                 <Box sx={{
@@ -252,7 +254,7 @@ export default function IndexPage() {
                                                     <Toolbar>
                                                         <Box
                                                             component={Link}
-                                                            href={videoconferencia.link}
+                                                            href={link}
                                                             target="_blank"
                                                             rel="noopener"
                                                             color="inherit"
@@ -277,6 +279,9 @@ export default function IndexPage() {
                                                                 {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
                                                             </Typography>
                                                         </Box>
+                                                        <Badge badgeContent={presos.length} sx={{m: 2}} color="primary">
+                                                            <PersonIcon color="action" />
+                                                        </Badge>
                                                         <IsolatedMenu videoconferencia={videoconferencia} />
                                                         <Button
                                                             component={Link}

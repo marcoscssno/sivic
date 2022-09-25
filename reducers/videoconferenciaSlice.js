@@ -69,15 +69,7 @@ export const videoconferenciaSlice = createSlice({
                 state.loading = false
                 state.success = true
                 state.error = null
-                const formCompatibleVideoconferencia = {
-                    data: action.payload.data.data_e_hora,
-                    hora: action.payload.data.data_e_hora,
-                    solicitante: action.payload.data.solicitante,
-                    sala: action.payload.data.sala,
-                    presos: action.payload.data.presos,
-                    link: action.payload.data.link
-                }
-                state.videoconferencia = formCompatibleVideoconferencia
+                state.videoconferencia = action.payload.data
                 state.error = null
             })
             .addCase(fetchVideoconferencia.rejected, (state, action) => {

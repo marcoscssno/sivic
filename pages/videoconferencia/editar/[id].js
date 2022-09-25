@@ -34,6 +34,14 @@ export default function EditarVideoconferenciaPage() {
     const router = useRouter()
     const { id } = router.query
     const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia)
+    const formCompatibleVideoconferencia = {
+        data: videoconferencia.data_e_hora,
+        hora: videoconferencia.data_e_hora,
+        solicitante: videoconferencia.solicitante,
+        sala: videoconferencia.sala,
+        presos: videoconferencia.presos,
+        link: videoconferencia.link
+    }
     const loading = useSelector(state => state.videoconferencia.loading)
     const success = useSelector(state => state.videoconferencia.success)
     const error = useSelector(state => state.videoconferencia.error)
@@ -53,11 +61,17 @@ export default function EditarVideoconferenciaPage() {
                     <Typography variant="h4" component="h1" gutterBottom>
                         Editar Videoconferência
                     </Typography>
+                    <Typography variant="body2" component="p" gutterBottom>
+                        Cadastrado em {moment(videoconferencia.createdAt).format('D/M/Y [às] H[h]mm[min]')} por {videoconferencia.createdBy}
+                    </Typography>
+                    <Typography variant="body2" component="p" gutterBottom>
+                        Atualizado pela última vez em {moment(videoconferencia.lastUpdatedAt).format('D/M/Y [às] H[h]mm[min]')} por {videoconferencia.lastUpdatedBy}
+                    </Typography>
                     <br />
                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                         <Formik
                             enableReinitialize={true}
-                            initialValues={videoconferencia}
+                            initialValues={formCompatibleVideoconferencia}
                             onSubmit={(values, { setSubmitting }) => {
                                 try {
                                     setSubmitting(false);
@@ -80,10 +94,6 @@ export default function EditarVideoconferenciaPage() {
                             }}
                         >
                             {({ submitForm, isSubmitting, values }) => {
-                                console.log('values');
-                                console.log(values);
-                                console.log('videoconferencia');
-                                console.log(videoconferencia);
                                 return (
                                 <Form>
                                     <Grid container spacing={2}>

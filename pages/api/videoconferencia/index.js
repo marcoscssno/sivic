@@ -28,7 +28,6 @@ export default async function handler(req, res) {
       break
     case 'POST':
       try {
-        console.log(req.body)
         const videoconferencia = await Videoconferencia.create(req.body)
         res.status(200).json({ success: true, data: videoconferencia })
       } catch (error) {
