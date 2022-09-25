@@ -34,6 +34,7 @@ export default function EditarVideoconferenciaPage() {
     const router = useRouter()
     const { id } = router.query
     const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia)
+    console.log(videoconferencia);
     const formCompatibleVideoconferencia = {
         data: videoconferencia.data_e_hora,
         hora: videoconferencia.data_e_hora,
@@ -218,7 +219,7 @@ export default function EditarVideoconferenciaPage() {
                                         variant="contained"
                                         color="primary"
                                         disabled={isSubmitting}
-                                        onClick={submitForm}
+                                        onClick={() => submitForm}
                                     >
                                         Editar
                                     </Button>

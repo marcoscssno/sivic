@@ -69,7 +69,7 @@ export default function CadastrarVideoconferenciaPage() {
                                         cela: '1',
                                     }
                                 ],
-                                link: 'http://patatap.com',
+                                link: 'http://patatap.com'
                             }}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
@@ -218,7 +218,7 @@ export default function CadastrarVideoconferenciaPage() {
                                         variant="contained"
                                         color="primary"
                                         disabled={isSubmitting}
-                                        onClick={submitForm}
+                                        onClick={() => submitForm}
                                     >
                                         Cadastrar
                                     </Button>
