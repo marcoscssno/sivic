@@ -28,6 +28,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers/videoconferenciaSlice';
 // Custom hook
 import { useAuthentication } from '../../../hooks/useAuthentication';
+// Lodash
+import { pick } from 'lodash';
 
 export default function EditarVideoconferenciaPage() {
     const user = useAuthentication({ redirectTo: '/login' })
@@ -38,13 +40,21 @@ export default function EditarVideoconferenciaPage() {
         {
             nome: '',
             ala: '',
-            cela: ''
+            cela: '',
+            periculosidade: ''
         }
     ]
     if (videoconferencia.presos.length > 0) {
-        presos = videoconferencia.presos;
+        presos = videoconferencia.presos.map((preso) => {
+            return preso = {
+                nome: preso.nome ? preso.nome: '',
+                ala: preso.ala ? preso.ala: '',
+                cela: preso.cela ? preso.cela: '',
+                periculosidade: preso.periculosidade ? preso.periculosidade: ''
+            }
+        });
     }
-    const formCompatibleVideoconferencia = {
+    const initialValues = {
         data: videoconferencia.data_e_hora,
         hora: videoconferencia.data_e_hora,
         solicitante: videoconferencia.solicitante,
@@ -81,7 +91,7 @@ export default function EditarVideoconferenciaPage() {
                     <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                         <Formik
                             enableReinitialize={true}
-                            initialValues={formCompatibleVideoconferencia}
+                            initialValues={initialValues}
                             onSubmit={(values, { setSubmitting }) => {
                                 try {
                                     setSubmitting(false);
@@ -149,11 +159,11 @@ export default function EditarVideoconferenciaPage() {
                                         <FieldArray name="presos">
                                             {({ insert, remove, push }) => (
                                                 <>
-                                                    {values.presos.length > 0 &&
+                                                    {values.presos.length > 0 && 
                                                         values.presos.map((preso, index) => (
                                                             <React.Fragment key={index}>
                                                                 <Grid container spacing={2} sx={{ alignItems: "center" }}>
-                                                                    <Grid item xs={6}>
+                                                                    <Grid item xs={4}>
                                                                         <Field
                                                                             fullWidth
                                                                             component={TextField}
@@ -162,7 +172,7 @@ export default function EditarVideoconferenciaPage() {
                                                                             name={`presos.${index}.nome`}
                                                                         />
                                                                     </Grid>
-                                                                    <Grid item xs={3}>
+                                                                    <Grid item xs={2}>
                                                                         <Field
                                                                             fullWidth
                                                                             component={TextField}
@@ -171,7 +181,7 @@ export default function EditarVideoconferenciaPage() {
                                                                             name={`presos.${index}.ala`}
                                                                         />
                                                                     </Grid>
-                                                                    <Grid item xs={1}>
+                                                                    <Grid item xs={2}>
                                                                         <Field
                                                                             fullWidth
                                                                             component={TextField}
@@ -180,10 +190,20 @@ export default function EditarVideoconferenciaPage() {
                                                                             name={`presos.${index}.cela`}
                                                                         />
                                                                     </Grid>
+                                                                    <Grid item xs={2}>
+                                                                        <Field
+                                                                            fullWidth
+                                                                            component={TextField}
+                                                                            type="text"
+                                                                            label="Periculosidade"
+                                                                            name={`presos.${index}.periculosidade`}
+                                                                        />
+                                                                    </Grid>
                                                                     <Grid item xs={1}>
                                                                         <Button
                                                                             variant="contained"
                                                                             color="primary"
+                                                                            size="small"
                                                                             onClick={() => remove(index)}
                                                                         >
                                                                             <RemoveIcon />
@@ -194,7 +214,8 @@ export default function EditarVideoconferenciaPage() {
                                                                             <Button
                                                                                 variant="contained"
                                                                                 color="primary"
-                                                                                onClick={() => push({ nome: '', ala: '', cela: '' })}
+                                                                                size="small"
+                                                                                onClick={() => push({ nome: '', ala: '', cela: '', periculosidade: '' })}
                                                                             >
                                                                                 <AddIcon />
                                                                             </Button>

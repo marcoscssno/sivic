@@ -18,7 +18,8 @@ const videoconferenciaSchema = new Schema({
     presos: [{
         nome: String,
         ala: String,
-        cela: String
+        cela: String,
+        periculosidade: String
     }],
     link: String,
     createdAt: {

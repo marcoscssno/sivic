@@ -62,11 +62,13 @@ export default function CadastrarVideoconferenciaPage() {
                                         nome: 'Fulano de Tal A',
                                         ala: 'A',
                                         cela: '1',
+                                        periculosidade: 'Baixa',
                                     },
                                     {
                                         nome: 'Fulano de Tal B',
                                         ala: 'B',
                                         cela: '1',
+                                        periculosidade: 'Baixa',
                                     }
                                 ],
                                 link: 'http://patatap.com'
@@ -143,7 +145,7 @@ export default function CadastrarVideoconferenciaPage() {
                                                     values.presos.map((preso, index) => (
                                                         <React.Fragment key={index}>
                                                             <Grid container spacing={2} sx={{ alignItems: "center" }}>
-                                                                <Grid item xs={6}>
+                                                                <Grid item xs={4}>
                                                                     <Field
                                                                         fullWidth
                                                                         component={TextField}
@@ -152,7 +154,7 @@ export default function CadastrarVideoconferenciaPage() {
                                                                         name={`presos.${index}.nome`}
                                                                     />
                                                                 </Grid>
-                                                                <Grid item xs={3}>
+                                                                <Grid item xs={2}>
                                                                     <Field
                                                                         fullWidth
                                                                         component={TextField}
@@ -161,13 +163,22 @@ export default function CadastrarVideoconferenciaPage() {
                                                                         name={`presos.${index}.ala`}
                                                                     />
                                                                 </Grid>
-                                                                <Grid item xs={1}>
+                                                                <Grid item xs={2}>
                                                                     <Field
                                                                         fullWidth
                                                                         component={TextField}
                                                                         type="text"
                                                                         label="Cela"
                                                                         name={`presos.${index}.cela`}
+                                                                    />
+                                                                </Grid>
+                                                                <Grid item xs={2}>
+                                                                    <Field
+                                                                        fullWidth
+                                                                        component={TextField}
+                                                                        type="text"
+                                                                        label="Periculosidade"
+                                                                        name={`presos.${index}.periculosidade`}
                                                                     />
                                                                 </Grid>
                                                                 <Grid item xs={1}>

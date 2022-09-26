@@ -14,7 +14,8 @@ const initialState = {
             {
                 nome: '',
                 ala: '',
-                cela: ''
+                cela: '',
+                periculosidade: ''
             }
         ],
         link: '',
