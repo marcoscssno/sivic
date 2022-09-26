@@ -47,10 +47,10 @@ export default function EditarVideoconferenciaPage() {
     if (videoconferencia.presos.length > 0) {
         presos = videoconferencia.presos.map((preso) => {
             return preso = {
-                nome: preso.nome ? preso.nome: '',
-                ala: preso.ala ? preso.ala: '',
-                cela: preso.cela ? preso.cela: '',
-                periculosidade: preso.periculosidade ? preso.periculosidade: ''
+                nome: preso.nome ? preso.nome : '',
+                ala: preso.ala ? preso.ala : '',
+                cela: preso.cela ? preso.cela : '',
+                periculosidade: preso.periculosidade ? preso.periculosidade : ''
             }
         });
     }
@@ -159,7 +159,7 @@ export default function EditarVideoconferenciaPage() {
                                         <FieldArray name="presos">
                                             {({ insert, remove, push }) => (
                                                 <>
-                                                    {values.presos.length > 0 && 
+                                                    {values.presos.length > 0 &&
                                                         values.presos.map((preso, index) => (
                                                             <React.Fragment key={index}>
                                                                 <Grid container spacing={2} sx={{ alignItems: "center" }}>
@@ -200,14 +200,16 @@ export default function EditarVideoconferenciaPage() {
                                                                         />
                                                                     </Grid>
                                                                     <Grid item xs={1}>
-                                                                        <Button
-                                                                            variant="contained"
-                                                                            color="primary"
-                                                                            size="small"
-                                                                            onClick={() => remove(index)}
-                                                                        >
-                                                                            <RemoveIcon />
-                                                                        </Button>
+                                                                        {values.presos.length > 1 &&
+                                                                            <Button
+                                                                                variant="contained"
+                                                                                color="primary"
+                                                                                size="small"
+                                                                                onClick={() => remove(index)}
+                                                                            >
+                                                                                <RemoveIcon />
+                                                                            </Button>
+                                                                        }
                                                                     </Grid>
                                                                     {index == values.presos.length - 1 && (
                                                                         <Grid item xs={1}>
