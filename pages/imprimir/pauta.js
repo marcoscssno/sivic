@@ -48,10 +48,26 @@ export default function IndexPage() {
                 title: 'Relatório'
             },
             pageSize: 'A4',
-            footer: {
-                text: 'Impresso em ' + moment().format('DD/MM/YYYY [às] H[h]m[min]') + '.',
-                fontSize: 10,
+            header: {
+                text: 'Cabeçalho',
                 margin: [40, 0]
+            },
+            footer: function(currentPage, pageCount) {
+                return {
+                    columns: [
+                        {
+                            text: 'Impresso em ' + moment().format('DD/MM/YYYY [às] H[h]m[min]') + '.',
+                            fontSize: 10,
+                            margin: [40, 0]
+                        },
+                        {
+                            text: `${currentPage}/${pageCount}`,
+                            fontSize: 10,
+                            alignment: 'right',
+                            margin: [40, 0]
+                        },
+                    ]
+                }
             },
             content: [
                 {
