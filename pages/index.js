@@ -1,235 +1,46 @@
 // React
 import React, { useEffect, useState } from 'react';
 // Other components
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
+import VideoconferenciaToolbar from '../components/VideoconferenciaToolbar';
+import VideoconferenciaFilterToolbar from '../components/VideoconferenciaFilterToolbar';
 // Utils
 import Link from '../src/Link';
-// Mui
+// Mui and Mui X
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Tooltip from '@mui/material/Tooltip';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import ArrowForward from '@mui/icons-material/ArrowForward';
-import PrintIcon from '@mui/icons-material/Print';
-import { Formik, Form, Field } from 'formik';
-import { DatePicker } from 'formik-mui-lab';
-import AdapterMoment from '@mui/lab/AdapterMoment';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { styled } from '@mui/material/styles';
-import Badge from '@mui/material/Badge';
-import PersonIcon from '@mui/icons-material/Person';
-// Moment
-import moment from 'moment'
-import 'moment/locale/pt-br';
+import Divider from '@mui/material/Divider';
 // Redux and Redux logic
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchVideoconferencias, fetchVideoconferenciasByDate, excluirVideoconferencia } from '../reducers/videoconferenciaSlice'
+import { fetchVideoconferencias } from '../reducers/videoconferenciaSlice'
 import { useAuthentication } from '../hooks/useAuthentication';
-// PDFMake
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
-const Item = styled(Paper)(({ theme }) => ({
-    margin: theme.spacing(1),
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4)
-}));
-
-const IsolatedMenu = props => {
-    const [AlertOpen, setAlertOpen] = useState(false);
-
-    const handleAlertOpen = () => {
-        setAlertOpen(true);
-    };
-
-    const handleAlertClose = () => {
-        setAlertOpen(false);
-        handleClose()
-    };
-    const dispatch = useDispatch()
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const handleExcluir = (id) => {
-        dispatch(excluirVideoconferencia(id))
-        setAlertOpen(false);
-        setAnchorEl(null);
-    }
-    const { videoconferencia } = props
-    const id = videoconferencia._id
-    const { solicitante, data_e_hora, sala } = videoconferencia
-
-    return (
-        <React.Fragment>
-            <IconButton
-                id="icon-button"
-                aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                size="small"
-                sx={{ marginRight: 1 }}
-                onClick={handleClick}>
-                <MoreVertIcon fontSize="small" />
-            </IconButton>
-            <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'icon-button',
-                }}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-            >
-                <MenuItem
-                    onClick={handleClose}
-                    component={Link}
-                    href={`/videoconferencia/editar/${id}`}
-                    target="_self"
-                    rel="noopener">
-                    Editar
-                </MenuItem>
-                <MenuItem onClick={handleAlertOpen}>Excluir</MenuItem>
-            </Menu>
-            <Dialog
-                open={AlertOpen}
-                onClose={handleAlertClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Excluir o agendamento de videoconferência abaixo?
-                        <br />
-                        <br />
-                        {solicitante}
-                        <br />
-                        {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleAlertClose}>Não</Button>
-                    <Button onClick={() => handleExcluir(id)} autoFocus>
-                        Sim
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </React.Fragment>
-    )
-}
 
 export default function IndexPage() {
     useAuthentication({ redirectTo: '/login' })
     const dispatch = useDispatch()
     const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
     const loading = useSelector(state => state.videoconferencia.loading)
-    const error = useSelector(state => state.videoconferencia.error)
     const fabStyle = {
         position: 'fixed',
         bottom: 32,
         right: 32,
     }
-    const NaoHaVideoconferencia = styled(Box)(({ theme }) => ({
-        margin: theme.spacing(1),
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(4),
-        padding: theme.spacing(3),
-    }));
     useEffect(() => {
         dispatch(fetchVideoconferencias())
     }, [])
     return (
         <Layout>
             <Container maxWidth="xl">
+                <VideoconferenciaFilterToolbar />
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Item>
-                            <Toolbar>
-                                <Box sx={{ my: 2, flexGrow: 1 }}>
-                                    <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
-                                        <Formik
-                                            initialValues={{
-                                                data: ""
-                                            }}
-                                            onSubmit={(values, { setSubmitting }) => {
-                                                const { data } = values
-                                                try {
-                                                    setSubmitting(false);
-                                                    if (data == null) {
-                                                        dispatch(fetchVideoconferencias())
-                                                    }
-                                                    else {
-                                                        dispatch(fetchVideoconferenciasByDate(data))
-                                                    }
-                                                }
-                                                catch (error) {
-                                                    console.log(error)
-                                                    setSubmitting(false);
-                                                }
-                                            }}
-                                        >
-                                            {({ submitForm, isSubmitting }) => (
-                                                <Form>
-                                                    <Box
-                                                        sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
-                                                        <Field
-                                                            component={DatePicker}
-                                                            size="small"
-                                                            type="date"
-                                                            label="Data"
-                                                            name="data"
-                                                        />
-                                                        <Button
-                                                            variant="contained"
-                                                            color="primary"
-                                                            disabled={isSubmitting}
-                                                            onClick={submitForm}
-                                                            sx={{ my: 2, ml: 1 }}
-                                                        >
-                                                            Filtrar
-                                                        </Button>
-                                                    </Box>
-                                                </Form>
-                                            )}
-                                        </Formik>
-                                    </LocalizationProvider>
-                                </Box>
-                                <Button variant="contained" component={Link} href="/imprimir/pauta" target="_blank" endIcon={<PrintIcon />}>
-                                    Imprimir
-                                </Button>
-                            </Toolbar>
-                        </Item>
-                    </Grid>
                     <Grid item xs={12}>
                         {loading ? (
                             <Stack spacing={1}>
@@ -239,75 +50,20 @@ export default function IndexPage() {
                             </Stack>
                         ) : (
                             videoconferencias.length > 0 ? (
-                                <Item>
-                                    {videoconferencias.map((videoconferencia, index) => {
-                                        const { data_e_hora, sala, solicitante, presos, link } = videoconferencia
-                                        return (
-                                            <React.Fragment key={index}>
-                                                <Box sx={{
-                                                    ':hover': {
-                                                        backgroundColor: 'grey.50',
-                                                        cursor: 'pointer',
-                                                        borderRadius: 'inherit'
-                                                    }
-                                                }}>
-                                                    <Toolbar>
-                                                        <Box
-                                                            component={Link}
-                                                            href={link}
-                                                            target="_blank"
-                                                            rel="noopener"
-                                                            color="inherit"
-                                                            sx={{
-                                                                flexGrow: 1,
-                                                                display: "flex",
-                                                                flexDirection: "column",
-                                                                textDecoration: "none"
-                                                            }}
-                                                        >
-                                                            <Typography
-                                                                variant="body"
-                                                                noWrap
-                                                            >
-                                                                {solicitante}
-                                                            </Typography>
-                                                            <Typography
-                                                                variant="body2"
-                                                                noWrap
-                                                                sx={{ color: "grey.600" }}
-                                                            >
-                                                                {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
-                                                            </Typography>
-                                                        </Box>
-                                                        <Badge badgeContent={presos.length} sx={{m: 2}} color="primary">
-                                                            <PersonIcon color="action" />
-                                                        </Badge>
-                                                        <IsolatedMenu videoconferencia={videoconferencia} />
-                                                        <Button
-                                                            component={Link}
-                                                            href={videoconferencia.link}
-                                                            target="_blank"
-                                                            rel="noopener"
-                                                            color="primary"
-                                                            variant="contained"
-                                                            size="small"
-                                                            endIcon={<ArrowForward />}
-                                                        >
-                                                            Entrar
-                                                        </Button>
-                                                    </Toolbar>
-                                                </Box>
-                                                {index + 1 < videoconferencias.length && <Divider />}
-                                            </React.Fragment>
-                                        )
-                                    })}
-                                </Item>
+                                <Paper sx={{mx: 1, my: 4}}>
+                                    {videoconferencias.map((videoconferencia, index) => (
+                                        <React.Fragment key={index}>
+                                            <VideoconferenciaToolbar videoconferencia={videoconferencia} />
+                                            {index + 1 < videoconferencias.length && <Divider />}
+                                        </React.Fragment>
+                                    ))}
+                                </Paper>
                             ) : (
-                                <NaoHaVideoconferencia>
+                                <Box sx={{ mx: 1, my: 4, p: 3}}>
                                     <Typography variant="body1">
                                         Não há videoconferência agendada para os parâmetros selecionados.
                                     </Typography>
-                                </NaoHaVideoconferencia>
+                                </Box>
                             )
                         )}
                     </Grid>

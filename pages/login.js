@@ -1,17 +1,24 @@
+// React
 import React from 'react';
+// Other components
 import Layout from '../components/Layout'
+// Mui
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import Grid from '@mui/material/Grid';
-import { useFormik } from 'formik';
 import TextField from '@mui/material/TextField';
+// Formik
+import { useFormik } from 'formik';
+// Redux, react-redux and Redux logic
 import { useSelector, useDispatch } from 'react-redux';
+// Axios
 import axios from 'axios';
-import { TryOutlined } from '@mui/icons-material';
+// Custom hook
 import { useAuthentication } from '../hooks/useAuthentication';
+// Next
 import Router from 'next/router'
 
 export default function LoginPage() {
