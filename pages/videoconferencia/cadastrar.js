@@ -182,20 +182,22 @@ export default function CadastrarVideoconferenciaPage() {
                                                                     />
                                                                 </Grid>
                                                                 <Grid item xs={1}>
-                                                                    <Button
-                                                                        variant="contained"
-                                                                        color="primary"
-                                                                        onClick={() => remove(index)}
-                                                                    >
-                                                                        <RemoveIcon />
-                                                                    </Button>
+                                                                    {values.presos.length > 1 &&
+                                                                        <Button
+                                                                            variant="contained"
+                                                                            color="primary"
+                                                                            onClick={() => remove(index)}
+                                                                        >
+                                                                            <RemoveIcon />
+                                                                        </Button>
+                                                                    }
                                                                 </Grid>
                                                                 {index == values.presos.length - 1 && (
                                                                     <Grid item xs={1}>
                                                                         <Button
                                                                             variant="contained"
                                                                             color="primary"
-                                                                            onClick={() => push({ nome: '', ala: '', cela: '' })}
+                                                                            onClick={() => push({ nome: '', ala: '', cela: '', periculosidade: '' })}
                                                                         >
                                                                             <AddIcon />
                                                                         </Button>
