@@ -15,11 +15,11 @@ export default async function handler(req, res) {
         if (date && (date !== "null" || date !== null)) {
           const beginDate = moment(date).format("YYYY-MM-DD")
           const endDate = moment(date).add(1, "days").format("YYYY-MM-DD")
-          const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } })
+          const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } }).sort('data_e_hora sala presos.nome');
           res.status(200).json({ success: true, data: videoconferencias })
         }
         else {
-          const videoconferencias = await Videoconferencia.find({ "excluida": false })
+          const videoconferencias = await Videoconferencia.find({ "excluida": false }).sort('data_e_hora sala presos.nome');
           res.status(200).json({ success: true, data: videoconferencias })
         }
       } catch (error) {

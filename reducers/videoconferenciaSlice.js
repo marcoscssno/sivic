@@ -20,6 +20,7 @@ const initialState = {
         ],
         link: '',
     },
+    workingDate: null,
     loading: false,
     success: false,
     error: null
@@ -29,8 +30,8 @@ export const videoconferenciaSlice = createSlice({
     name: 'videoconferencia',
     initialState,
     reducers: {
-        cadastrar: (state, action) => {
-            state.videoconferencias.push(action.payload)
+        defineWorkingDate (state, action) {
+            state.workingDate = action.payload
         }
     },
     extraReducers(builder) {
@@ -131,7 +132,7 @@ export const videoconferenciaSlice = createSlice({
     }
 })
 
-export const { cadastrar } = videoconferenciaSlice.actions
+export const { defineWorkingDate } = videoconferenciaSlice.actions;
 
 export const cadastrarVideoconferencia = createAsyncThunk(
     'videoconferencia/cadastrarVideoconferencia',

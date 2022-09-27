@@ -4,20 +4,13 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 // Other components
 import Layout from '../../../components/Layout'
+import VideoconferenciaForm from '../../../components/VideoconferenciaForm';
 // Mui
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import LinearProgress from '@mui/material/LinearProgress';
-import Grid from '@mui/material/Grid';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 // Formik, formik-mui, formik-mui-lab
-import { Formik, Form, Field, FieldArray } from 'formik';
-import { TextField } from 'formik-mui';
-import { DatePicker } from 'formik-mui-lab';
-import { TimePicker } from 'formik-mui-lab';
+import { Formik } from 'formik';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 // Moment
@@ -28,8 +21,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers/videoconferenciaSlice';
 // Custom hook
 import { useAuthentication } from '../../../hooks/useAuthentication';
-// Lodash
-import { pick } from 'lodash';
+
 
 export default function EditarVideoconferenciaPage() {
     const user = useAuthentication({ redirectTo: '/login' })
@@ -62,18 +54,12 @@ export default function EditarVideoconferenciaPage() {
         presos: presos,
         link: videoconferencia.link
     }
-    const loading = useSelector(state => state.videoconferencia.loading)
     const success = useSelector(state => state.videoconferencia.success)
-    const error = useSelector(state => state.videoconferencia.error)
     const dispatch = useDispatch();
     useEffect(() => {
         /* Fix for bug when first rendering shows router.query.id as undefined and triggers Axios error */
         id && dispatch(fetchVideoconferencia(id))
     }, [router.query])
-    const LinearProgressStyle = {
-        marginTop: '32px',
-        marginBottom: '16px'
-    }
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -115,149 +101,7 @@ export default function EditarVideoconferenciaPage() {
                         >
                             {({ submitForm, isSubmitting, values }) => {
                                 return (
-                                    <Form>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={2}>
-                                                <Field
-                                                    component={DatePicker}
-                                                    type="date"
-                                                    label="Data"
-                                                    name="data"
-                                                    autoFocus={true}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={2}>
-                                                <Field
-                                                    component={TimePicker}
-                                                    type="time"
-                                                    label="Hora"
-                                                    name="hora"
-                                                />
-                                            </Grid>
-                                            <Grid item xs={2}>
-                                                <Field
-                                                    component={TextField}
-                                                    type="text"
-                                                    label="Sala"
-                                                    name="sala"
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                        <br />
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={6}>
-                                                <Field
-                                                    fullWidth
-                                                    component={TextField}
-                                                    type="text"
-                                                    label="Solicitante"
-                                                    name="solicitante"
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                        <br />
-                                        <FieldArray name="presos">
-                                            {({ insert, remove, push }) => (
-                                                <>
-                                                    {values.presos.length > 0 &&
-                                                        values.presos.map((preso, index) => (
-                                                            <React.Fragment key={index}>
-                                                                <Grid container spacing={2} sx={{ alignItems: "center" }}>
-                                                                    <Grid item xs={4}>
-                                                                        <Field
-                                                                            fullWidth
-                                                                            component={TextField}
-                                                                            type="text"
-                                                                            label="Nome"
-                                                                            name={`presos.${index}.nome`}
-                                                                        />
-                                                                    </Grid>
-                                                                    <Grid item xs={2}>
-                                                                        <Field
-                                                                            fullWidth
-                                                                            component={TextField}
-                                                                            type="text"
-                                                                            label="Ala"
-                                                                            name={`presos.${index}.ala`}
-                                                                        />
-                                                                    </Grid>
-                                                                    <Grid item xs={2}>
-                                                                        <Field
-                                                                            fullWidth
-                                                                            component={TextField}
-                                                                            type="text"
-                                                                            label="Cela"
-                                                                            name={`presos.${index}.cela`}
-                                                                        />
-                                                                    </Grid>
-                                                                    <Grid item xs={2}>
-                                                                        <Field
-                                                                            fullWidth
-                                                                            component={TextField}
-                                                                            type="text"
-                                                                            label="Periculosidade"
-                                                                            name={`presos.${index}.periculosidade`}
-                                                                        />
-                                                                    </Grid>
-                                                                    <Grid item xs={1}>
-                                                                        {values.presos.length > 1 &&
-                                                                            <Button
-                                                                                variant="contained"
-                                                                                color="primary"
-                                                                                size="small"
-                                                                                onClick={() => remove(index)}
-                                                                            >
-                                                                                <RemoveIcon />
-                                                                            </Button>
-                                                                        }
-                                                                    </Grid>
-                                                                    {index == values.presos.length - 1 && (
-                                                                        <Grid item xs={1}>
-                                                                            <Button
-                                                                                variant="contained"
-                                                                                color="primary"
-                                                                                size="small"
-                                                                                onClick={() => push({ nome: '', ala: '', cela: '', periculosidade: '' })}
-                                                                            >
-                                                                                <AddIcon />
-                                                                            </Button>
-                                                                        </Grid>
-                                                                    )}
-                                                                </Grid>
-                                                                {index + 1 < values.presos.length && (
-                                                                    <br />
-                                                                )}
-                                                            </React.Fragment>
-                                                        ))
-                                                    }
-                                                </>
-                                            )}
-                                        </FieldArray>
-                                        <br />
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={6}>
-                                                <Field
-                                                    fullWidth
-                                                    component={TextField}
-                                                    type="url"
-                                                    label="Link"
-                                                    name="link"
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                        <br />
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            disabled={isSubmitting}
-                                            onClick={() => submitForm}
-                                        >
-                                            Editar
-                                        </Button>
-                                        {(isSubmitting || loading) && <LinearProgress style={LinearProgressStyle} />}
-                                        {error != null && <p>{error}</p>}
-                                    </Form>
+                                    <VideoconferenciaForm submitForm={submitForm} isSubmitting={isSubmitting} values={values} submitButtonValue="Editar" />
                                 )
                             }}
                         </Formik>

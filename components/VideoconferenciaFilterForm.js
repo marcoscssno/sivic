@@ -8,8 +8,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 // Redux and Redux logic
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchVideoconferencias, fetchVideoconferenciasByDate } from '../reducers/videoconferenciaSlice';
+import { useDispatch } from 'react-redux';
+import { fetchVideoconferencias, fetchVideoconferenciasByDate, defineWorkingDate } from '../reducers/videoconferenciaSlice';
 // Formik
 import { useFormik } from 'formik';
 // Moment
@@ -23,14 +23,16 @@ export default function VideoconferenciaFilterForm() {
             data: moment()
         },
         onSubmit: (values, { setSubmitting }) => {
-            const { data } = values
+            const data = moment(values.data).format('Y-M-D');
             try {
                 setSubmitting(false);
                 if (data == null) {
-                    dispatch(fetchVideoconferencias())
+                    dispatch(fetchVideoconferencias());
+                    dispatch(defineWorkingDate(null));
                 }
                 else {
-                    dispatch(fetchVideoconferenciasByDate(data))
+                    dispatch(fetchVideoconferenciasByDate(data));
+                    dispatch(defineWorkingDate(data));
                 }
             }
             catch (error) {

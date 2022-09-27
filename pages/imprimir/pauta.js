@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 // Redux and Redux logic
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchVideoconferencias } from '../../reducers/videoconferenciaSlice'
+import { fetchVideoconferencias, fetchVideoconferenciasByDate } from '../../reducers/videoconferenciaSlice'
 import { useAuthentication } from '../../hooks/useAuthentication';
 // Moment
 import moment from 'moment'
@@ -10,14 +10,23 @@ import moment from 'moment'
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// Next
+import { useRouter } from 'next/router'
 
-export default function IndexPage() {
+export default function Pauta() {
     useAuthentication({ redirectTo: '/login' })
+    const router = useRouter();
+    const workingDate = router.query.date
+    const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(fetchVideoconferencias());
-    }, [])
-    const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
+        if (workingDate) {
+            dispatch(fetchVideoconferenciasByDate(workingDate));
+        }
+        else {
+            dispatch(fetchVideoconferencias());
+        }
+    }, [workingDate])
     const styles = {
         header: {
             fontSize: 12,
@@ -67,7 +76,7 @@ export default function IndexPage() {
                     alignment: 'center'
                 },
                 {
-                    text: ['Unidade Prisional Regional de Sobral', '\n', 'Pauta de Videoconferência', '\n', moment().format('DD/MM/YYYY') + '\n\n'],
+                    text: ['Unidade Prisional Regional de Sobral', '\n', 'Pauta de Videoconferência', '\n', moment(workingDate).format('DD/MM/YYYY') + '\n\n'],
                     alignment: 'center',
                     bold: true
                 },
@@ -104,8 +113,7 @@ export default function IndexPage() {
     }
     useEffect(() => {
         videoconferenciasForPrinting();
-        // console.log(videoconferenciasTable);
         videoconferencias.length > 0 && printContent();
-    }, [videoconferencias])
+    }, [videoconferencias, workingDate])
     return null;
 }

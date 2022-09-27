@@ -13,9 +13,12 @@ import Button from '@mui/material/Button';
 import PrintIcon from '@mui/icons-material/Print';
 // Custom hook
 import { useAuthentication } from '../hooks/useAuthentication';
+// Redux and Redux logic
+import { useSelector } from 'react-redux';
 
 export default function VideoconferenciaFilterToolbar() {
     const user = useAuthentication();
+    const workingDate = useSelector(state => state.videoconferencia.workingDate)
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -25,7 +28,7 @@ export default function VideoconferenciaFilterToolbar() {
                             <VideoconferenciaFilterForm />
                         </Box>
                         {user && (
-                            <Button variant="contained" component={Link} href="/imprimir/pauta" target="_blank" endIcon={<PrintIcon />}>
+                            <Button variant="contained" component={Link} href={`/imprimir/pauta/?date=${workingDate}`} target="_blank" endIcon={<PrintIcon />}>
                                 Imprimir
                             </Button>
                         )}
