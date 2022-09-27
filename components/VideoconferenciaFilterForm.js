@@ -39,7 +39,7 @@ export default function VideoconferenciaFilterForm() {
             }
         }
     })
-    const { handleSubmit, values, handleBlur, handleChange, touched, errors, isSubmitting, setFieldValue } = formik;
+    const { handleSubmit, values, handleBlur, touched, errors, isSubmitting, setFieldValue } = formik;
     return (
         <form onSubmit={handleSubmit}>
             <Box
@@ -47,8 +47,8 @@ export default function VideoconferenciaFilterForm() {
                 <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')}>
                     <DatePicker
                         onChange={(value) => setFieldValue("data", value, true)}
-                        value={values.data}
                         label="Data"
+                        value={values.data}
                         renderInput={(params) => (
                             <TextField
                                 size="small"
