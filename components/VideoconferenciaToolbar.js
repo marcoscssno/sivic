@@ -14,8 +14,11 @@ import Badge from '@mui/material/Badge';
 import PersonIcon from '@mui/icons-material/Person';
 // Moment
 import moment from 'moment'
+// Custom hook
+import { useAuthentication } from '../hooks/useAuthentication';
 
 export default function VideoconferenciaToolbar(props) {
+    const user = useAuthentication();
     const { videoconferencia } = props;
     const { data_e_hora, sala, solicitante, presos, link } = videoconferencia
     return (
@@ -54,10 +57,12 @@ export default function VideoconferenciaToolbar(props) {
                         {moment(data_e_hora).format('D/M/YYYY - H[h]mm[min]')} - {sala}
                     </Typography>
                 </Box>
-                <Badge badgeContent={presos.length} sx={{ m: 2 }} color="primary">
+                <Badge badgeContent={presos.length} sx={{ mx: 3 }} color="primary">
                     <PersonIcon color="action" />
                 </Badge>
-                <VideoconferenciaEditMenu videoconferencia={videoconferencia} />
+                {user && (
+                    <VideoconferenciaEditMenu videoconferencia={videoconferencia} />
+                )}
                 <Button
                     component={Link}
                     href={videoconferencia.link}

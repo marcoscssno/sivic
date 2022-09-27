@@ -11,9 +11,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import PrintIcon from '@mui/icons-material/Print';
+// Custom hook
+import { useAuthentication } from '../hooks/useAuthentication';
 
 export default function VideoconferenciaFilterToolbar() {
-
+    const user = useAuthentication();
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -22,9 +24,11 @@ export default function VideoconferenciaFilterToolbar() {
                         <Box sx={{ my: 2, flexGrow: 1 }}>
                             <VideoconferenciaFilterForm />
                         </Box>
-                        <Button variant="contained" component={Link} href="/imprimir/pauta" target="_blank" endIcon={<PrintIcon />}>
-                            Imprimir
-                        </Button>
+                        {user && (
+                            <Button variant="contained" component={Link} href="/imprimir/pauta" target="_blank" endIcon={<PrintIcon />}>
+                                Imprimir
+                            </Button>
+                        )}
                     </Toolbar>
                 </Paper>
             </Grid>

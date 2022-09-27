@@ -24,18 +24,18 @@ import { fetchVideoconferencias } from '../reducers/videoconferenciaSlice'
 import { useAuthentication } from '../hooks/useAuthentication';
 
 export default function IndexPage() {
-    useAuthentication({ redirectTo: '/login' })
-    const dispatch = useDispatch()
-    const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
-    const loading = useSelector(state => state.videoconferencia.loading)
+    const user = useAuthentication();
+    const dispatch = useDispatch();
+    const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias);
+    const loading = useSelector(state => state.videoconferencia.loading);
     const fabStyle = {
         position: 'fixed',
         bottom: 32,
         right: 32,
-    }
+    };
     useEffect(() => {
-        dispatch(fetchVideoconferencias())
-    }, [])
+        dispatch(fetchVideoconferencias());
+    }, []);
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -50,7 +50,7 @@ export default function IndexPage() {
                             </Stack>
                         ) : (
                             videoconferencias.length > 0 ? (
-                                <Paper sx={{mx: 1, my: 4}}>
+                                <Paper sx={{ mx: 1, my: 4 }}>
                                     {videoconferencias.map((videoconferencia, index) => (
                                         <React.Fragment key={index}>
                                             <VideoconferenciaToolbar videoconferencia={videoconferencia} />
@@ -59,7 +59,7 @@ export default function IndexPage() {
                                     ))}
                                 </Paper>
                             ) : (
-                                <Box sx={{ mx: 1, my: 4, p: 3}}>
+                                <Box sx={{ mx: 1, my: 4, p: 3 }}>
                                     <Typography variant="body1">
                                         Não há videoconferência agendada para os parâmetros selecionados.
                                     </Typography>
@@ -68,20 +68,22 @@ export default function IndexPage() {
                         )}
                     </Grid>
                 </Grid>
-                <Tooltip
-                    title="Cadastrar"
-                    placement="left"
-                >
-                    <Fab
-                        color="primary"
-                        aria-label="add"
-                        style={fabStyle}
-                        component={Link}
-                        href="/videoconferencia/cadastrar">
-                        <AddIcon />
-                    </Fab>
-                </Tooltip>
+                {user && (
+                    <Tooltip
+                        title="Cadastrar"
+                        placement="left"
+                    >
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            style={fabStyle}
+                            component={Link}
+                            href="/videoconferencia/cadastrar">
+                            <AddIcon />
+                        </Fab>
+                    </Tooltip>
+                )}
             </Container>
         </Layout >
-    )
+    );
 }
