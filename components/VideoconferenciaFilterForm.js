@@ -18,12 +18,22 @@ import 'moment/locale/pt-br';
 
 export default function VideoconferenciaFilterForm() {
     const dispatch = useDispatch()
+    const validate = (values) => {
+        const errors = {};
+        const { data } = values;
+        if (data != null && !moment(data).isValid()) {
+            errors.data = 'Data inválida';
+            console.log(data);
+        }
+        return errors;
+    }
     const formik = useFormik({
         initialValues: {
             data: moment()
         },
+        validate,
         onSubmit: (values, { setSubmitting }) => {
-            const data = moment(values.data).format('Y-M-D');
+            const { data } = values;
             try {
                 setSubmitting(false);
                 if (data == null) {
@@ -31,6 +41,7 @@ export default function VideoconferenciaFilterForm() {
                     dispatch(defineWorkingDate(null));
                 }
                 else {
+                    const data = moment(values.data).format('Y-M-D');
                     dispatch(fetchVideoconferenciasByDate(data));
                     dispatch(defineWorkingDate(data));
                 }

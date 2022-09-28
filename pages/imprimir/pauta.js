@@ -16,15 +16,18 @@ import { useRouter } from 'next/router'
 export default function Pauta() {
     useAuthentication({ redirectTo: '/login' })
     const router = useRouter();
-    const workingDate = router.query.date
+    const { workingDate } = router.query
     const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
     const dispatch = useDispatch()
     useEffect(() => {
-        if (workingDate) {
-            dispatch(fetchVideoconferenciasByDate(workingDate));
-        }
+        if (workingDate == undefined) return;
         else {
-            dispatch(fetchVideoconferencias());
+            if (workingDate !== null) {
+                dispatch(fetchVideoconferenciasByDate(workingDate));
+            }
+            else {
+                dispatch(fetchVideoconferencias());
+            }
         }
     }, [workingDate])
     const styles = {
@@ -48,23 +51,23 @@ export default function Pauta() {
     ]
     const videoconferenciasForPrinting = () => {
         return videoconferencias.map((videoconferencia) => {
-                const { solicitante, data_e_hora, sala, presos } = videoconferencia;
-                presos.map((preso) => {
-                    return videoconferenciasTable.push([
-                        preso.nome,
-                        moment(data_e_hora).format('H[h]m[min]'),
-                        solicitante,
-                        sala,
-                        preso.ala,
-                        preso.cela
-                    ])
-                })
+            const { solicitante, data_e_hora, sala, presos } = videoconferencia;
+            presos.map((preso) => {
+                return videoconferenciasTable.push([
+                    preso.nome,
+                    moment(data_e_hora).format('H[h]m[min]'),
+                    solicitante,
+                    sala,
+                    preso.ala,
+                    preso.cela
+                ])
             })
+        })
     }
     const printContent = () => {
         const docDefinition = {
             info: {
-                title: 'Relatório'
+                title: 'Pauta'
             },
             pageSize: 'A4',
             pageMargins: [40, 215, 40, 60],
@@ -76,7 +79,7 @@ export default function Pauta() {
                     alignment: 'center'
                 },
                 {
-                    text: ['Unidade Prisional Regional de Sobral', '\n', 'Pauta de Videoconferência', '\n', moment(workingDate).format('DD/MM/YYYY') + '\n\n'],
+                    text: ['Unidade Prisional Regional de Sobral', '\n', 'Pauta de Videoconferência', '\n', workingDate == 'null' ? moment().format('DD/MM/YYYY') + '\n\n' : moment(workingDate).format('DD/MM/YYYY') + '\n\n'],
                     alignment: 'center',
                     bold: true
                 },
@@ -107,13 +110,15 @@ export default function Pauta() {
                     layout: 'lightHorizontalLines'
                 }
             ],
-            styles
-        }
-        pdfMake.createPdf(docDefinition).open({}, window)
+    styles
+}
+pdfMake.createPdf(docDefinition).open({}, window)
     }
-    useEffect(() => {
-        videoconferenciasForPrinting();
-        videoconferencias.length > 0 && printContent();
-    }, [videoconferencias, workingDate])
-    return null;
+useEffect(() => {
+    videoconferenciasForPrinting();
+    console.log('videoconferencias');
+    console.log(videoconferencias);
+    workingDate !== undefined && printContent();
+}, [videoconferencias, router.query])
+return null;
 }

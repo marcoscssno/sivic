@@ -28,7 +28,7 @@ export default function VideoconferenciaFilterToolbar() {
                             <VideoconferenciaFilterForm />
                         </Box>
                         {user && (
-                            <Button variant="contained" component={Link} href={`/imprimir/pauta/?date=${workingDate}`} target="_blank" endIcon={<PrintIcon />}>
+                            <Button variant="contained" component={Link} href={`/imprimir/pauta/?workingDate=${workingDate}`} target="_blank" endIcon={<PrintIcon />}>
                                 Imprimir
                             </Button>
                         )}
