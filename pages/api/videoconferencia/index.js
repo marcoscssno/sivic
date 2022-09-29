@@ -1,7 +1,6 @@
 import dbConnect from '../../../utils/dbConnect'
 import Videoconferencia from '../../../models/Videoconferencia'
 import moment from 'moment'
-import { CatchingPokemonSharp } from '@mui/icons-material'
 
 export default async function handler(req, res) {
   const { method } = req
@@ -12,18 +11,20 @@ export default async function handler(req, res) {
     case 'GET':
       const { date } = req.query
       try {
-        if (date && (date !== "null" || date !== null)) {
-          const beginDate = moment(date).format("YYYY-MM-DD")
-          const endDate = moment(date).add(1, "days").format("YYYY-MM-DD")
-          const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } }).sort('data_e_hora sala presos.nome');
-          return res.status(200).json({ success: true, data: videoconferencias })
+        if (date) {
+          if (date !== null && date !== 'null') {
+            const beginDate = moment(date).format("YYYY-MM-DD")
+            const endDate = moment(date).add(1, "days").format("YYYY-MM-DD")
+            const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } }).sort('data_e_hora sala presos.nome');
+            return res.status(200).json({ success: true, data: videoconferencias })
+          }
+          else {
+            const videoconferencias = await Videoconferencia.find({ "excluida": false }).sort('data_e_hora sala presos.nome');
+            return res.status(200).json({ success: true, data: videoconferencias })
+          }
         }
         else {
           const videoconferencias = await Videoconferencia.find({ "excluida": false }).sort('data_e_hora sala presos.nome');
-          console.log('date');
-          console.log(date);
-          console.log('videoconferencias');
-          console.log(videoconferencias);
           return res.status(200).json({ success: true, data: videoconferencias })
         }
       } catch (error) {

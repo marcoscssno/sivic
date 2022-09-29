@@ -2421,6 +2421,10 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
+"xlsx@https://cdn.sheetjs.com/xlsx-0.18.12/xlsx-0.18.12.tgz":
+  version "0.18.12"
+  resolved "https://cdn.sheetjs.com/xlsx-0.18.12/xlsx-0.18.12.tgz#68828b7645f5194ac6c01708b0f18d4816f4b853"
+
 xmldoc@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/xmldoc/-/xmldoc-1.2.0.tgz#7554371bfd8c138287cff01841ae4566d26e5541"
