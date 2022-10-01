@@ -18,18 +18,9 @@ export default function Pauta() {
     const router = useRouter();
     const { workingDate } = router.query
     const videoconferencias = useSelector(state => state.videoconferencia.videoconferencias)
+    const done = useSelector(state => state.videoconferencia.done)
+    const success = useSelector(state => state.videoconferencia.success)
     const dispatch = useDispatch()
-    useEffect(async () => {
-        if (workingDate == undefined) return;
-        else {
-            if (workingDate !== null) {
-                await dispatch(fetchVideoconferenciasByDate(workingDate));
-            }
-            else {
-                await dispatch(fetchVideoconferencias());
-            }
-        }
-    }, [router.query])
     const styles = {
         header: {
             fontSize: 12,
@@ -65,6 +56,7 @@ export default function Pauta() {
         })
     }
     const printContent = () => {
+        videoconferenciasForPrinting()
         const docDefinition = {
             info: {
                 title: 'Pauta'
@@ -114,9 +106,20 @@ export default function Pauta() {
         }
         pdfMake.createPdf(docDefinition).open({}, window)
     }
-    useEffect(async () => {
-        await videoconferenciasForPrinting();
-        workingDate !== undefined && await printContent();
-    }, [videoconferencias, router.query])
+    useEffect(() => {
+        if (!done) {
+            if (workingDate !== undefined) {
+                if (workingDate !== null && workingDate !== 'null') {
+                    dispatch(fetchVideoconferenciasByDate(workingDate))
+                }
+            }
+        }
+        const printPDF = async () => {
+            if (done && success) {
+                await printContent();
+            }
+        }
+        printPDF();
+    }, [router.query, videoconferencias])
     return null;
 }

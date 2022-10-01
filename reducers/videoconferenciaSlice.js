@@ -23,7 +23,8 @@ const initialState = {
     workingDate: null,
     loading: false,
     success: false,
-    error: null
+    error: null,
+    done: false
 }
 
 export const videoconferenciaSlice = createSlice({
@@ -52,17 +53,20 @@ export const videoconferenciaSlice = createSlice({
             })
             .addCase(fetchVideoconferenciasByDate.pending, (state) => {
                 state.loading = true
+                state.done = false
             })
             .addCase(fetchVideoconferenciasByDate.fulfilled, (state, action) => {
                 state.loading = false
                 state.error = null
                 state.success = true
                 state.videoconferencias = action.payload.data
+                state.done = true
             })
             .addCase(fetchVideoconferenciasByDate.rejected, (state, action) => {
                 state.loading = false
                 state.success = false
                 state.error = action.error.message
+                state.done = true
             })
             .addCase(fetchVideoconferencia.pending, (state) => {
                 state.loading = true
