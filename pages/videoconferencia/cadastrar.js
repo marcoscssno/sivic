@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 // Formik,formik-mui and formik-mui-lab
-import { Formik, Form, Field, FieldArray } from 'formik';
+import { Formik } from 'formik';
 // Moment
 import moment from 'moment';
 import 'moment/locale/pt-br';
@@ -38,23 +38,17 @@ export default function CadastrarVideoconferenciaPage() {
                             initialValues={{
                                 data: moment().add(1, 'days'),
                                 hora: moment().add(1, 'days').hour(8).minute(30),
-                                sala: 'Sala 1',
-                                solicitante: 'Comarca de Groaíras',
+                                sala: '',
+                                solicitante: '',
                                 presos: [
                                     {
-                                        nome: 'Fulano de Tal A',
-                                        ala: 'A',
-                                        cela: '1',
-                                        periculosidade: 'Baixa',
-                                    },
-                                    {
-                                        nome: 'Fulano de Tal B',
-                                        ala: 'B',
-                                        cela: '1',
-                                        periculosidade: 'Baixa',
+                                        nome: '',
+                                        ala: '',
+                                        cela: '',
+                                        periculosidade: '',
                                     }
                                 ],
-                                link: 'http://patatap.com'
+                                link: ''
                             }}
                             onSubmit={async (values, { setSubmitting }) => {
                                 try {
