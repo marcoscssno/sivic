@@ -12,19 +12,23 @@ export default async function handler(req, res) {
       const { date } = req.query
       try {
         if (date) {
-          if (date !== null && date !== 'null') {
+          if (date !== null && date !== 'null') { // Date is set
             const beginDate = moment(date).format("YYYY-MM-DD")
             const endDate = moment(date).add(1, "days").format("YYYY-MM-DD")
             const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } }).sort('data_e_hora sala presos.nome');
             return res.status(200).json({ success: true, data: videoconferencias })
           }
           else {
-            const videoconferencias = await Videoconferencia.find({ "excluida": false }).sort('data_e_hora sala presos.nome');
+            const beginDate = moment().format("YYYY-MM-DD")
+            const endDate = moment().add(1, "days").format("YYYY-MM-DD")
+            const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } }).sort('data_e_hora sala presos.nome');
             return res.status(200).json({ success: true, data: videoconferencias })
           }
         }
         else {
-          const videoconferencias = await Videoconferencia.find({ "excluida": false }).sort('data_e_hora sala presos.nome');
+          const beginDate = moment().format("YYYY-MM-DD")
+          const endDate = moment().add(1, "days").format("YYYY-MM-DD")
+          const videoconferencias = await Videoconferencia.find({ "excluida": false, "data_e_hora": { $gte: beginDate, $lt: endDate } }).sort('data_e_hora sala presos.nome');
           return res.status(200).json({ success: true, data: videoconferencias })
         }
       } catch (error) {

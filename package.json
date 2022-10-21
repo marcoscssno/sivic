@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next",
+    "dev": "next dev -H 192.168.14.131 -p 5000",
     "build": "next build",
     "start": "next start"
   },
