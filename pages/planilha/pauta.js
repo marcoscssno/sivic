@@ -10,7 +10,6 @@ import moment from 'moment'
 import XLSX from 'xlsx';
 // Next
 import { useRouter } from 'next/router'
-import { PersonRemove, PersonSearch } from '@mui/icons-material';
 
 export default function PlanilhaPauta() {
     useAuthentication({ redirectTo: '/login' })
@@ -39,7 +38,7 @@ export default function PlanilhaPauta() {
                 INTERNO: nome,
                 ORIGEM: 'UPSobral',
                 DESTINO: sala,
-                HORARIO: moment(data_e_hora).format('H:m'),
+                HORARIO: moment(data_e_hora).format('H:mm'),
                 PROCEDIMENTO: 'Videoconferência',
                 RESP: 'UPSobral',
                 PERICUL: periculosidade,
@@ -48,8 +47,20 @@ export default function PlanilhaPauta() {
             });
         });
     });
+    const columnsWidth = [
+        {wpx: 200},
+        {wpx: 100},
+        {wpx: 100},
+        {wpx: 100},
+        {wpx: 100},
+        {wpx: 100},
+        {wpx: 100},
+        {wpx: 100},
+        {wpx: 100},
+    ]
     const downloadSheet = function (rows) {
         const worksheet = XLSX.utils.json_to_sheet(rows);
+        worksheet["!cols"] = columnsWidth;
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Plan1");
         XLSX.writeFile(workbook, `Videoconferencias_${moment(workingDate).format('YYYY-MM-DD')}.xlsx`);

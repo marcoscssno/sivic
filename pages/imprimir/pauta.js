@@ -46,7 +46,7 @@ export default function Pauta() {
             presos.map((preso) => {
                 return videoconferenciasTable.push([
                     preso.nome,
-                    moment(data_e_hora).format('H[h]m[min]'),
+                    moment(data_e_hora).format('H[h]mm[min]'),
                     solicitante,
                     sala,
                     preso.ala,
@@ -80,7 +80,7 @@ export default function Pauta() {
                 return {
                     columns: [
                         {
-                            text: 'Impresso em ' + moment().format('DD/MM/YYYY [às] H[h]m[min]') + '.',
+                            text: 'Impresso em ' + moment().format('DD/MM/YYYY [às] H[h]mm[min]') + '.',
                             fontSize: 10,
                             margin: [40, 0]
                         },
