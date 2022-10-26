@@ -26,8 +26,9 @@ export default function VideoconferenciaForm(props) {
     return (
         <Form>
             <Grid container spacing={2}>
-                <Grid item xs={2}>
+                <Grid item xs={12} sm={4} lg={2}>
                     <Field
+                        fullWidth
                         component={DatePicker}
                         type="date"
                         label="Data"
@@ -35,26 +36,25 @@ export default function VideoconferenciaForm(props) {
                         autoFocus={true}
                     />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} sm={4} lg={2}>
                     <Field
+                        fullWidth
                         component={TimePicker}
                         type="time"
                         label="Hora"
                         name="hora"
                     />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={12} sm={4} lg={2}>
                     <Field
+                        fullWidth
                         component={TextField}
                         type="text"
                         label="Sala"
                         name="sala"
                     />
                 </Grid>
-            </Grid>
-            <br />
-            <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} lg={6}>
                     <Field
                         fullWidth
                         component={TextField}
@@ -71,8 +71,8 @@ export default function VideoconferenciaForm(props) {
                         {values.presos.length > 0 &&
                             values.presos.map((preso, index) => (
                                 <React.Fragment key={index}>
-                                    <Grid container spacing={2} sx={{ alignItems: "center" }}>
-                                        <Grid item xs={4}>
+                                    <Grid container spacing={2} alignItems="center">
+                                        <Grid item xs={12} lg={4}>
                                             <Field
                                                 fullWidth
                                                 component={TextField}
@@ -81,7 +81,7 @@ export default function VideoconferenciaForm(props) {
                                                 name={`presos.${index}.nome`}
                                             />
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={12} md={4} lg={2}>
                                             <Field
                                                 fullWidth
                                                 component={TextField}
@@ -90,7 +90,7 @@ export default function VideoconferenciaForm(props) {
                                                 name={`presos.${index}.ala`}
                                             />
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={12} md={4} lg={2}>
                                             <Field
                                                 fullWidth
                                                 component={TextField}
@@ -99,7 +99,7 @@ export default function VideoconferenciaForm(props) {
                                                 name={`presos.${index}.cela`}
                                             />
                                         </Grid>
-                                        <Grid item xs={2}>
+                                        <Grid item xs={12} md={4} lg={2}>
                                             <Field
                                                 fullWidth
                                                 component={TextField}
@@ -108,7 +108,7 @@ export default function VideoconferenciaForm(props) {
                                                 name={`presos.${index}.periculosidade`}
                                             />
                                         </Grid>
-                                        <Grid item xs={1}>
+                                        <Grid item xs={6} lg={1}>
                                             {values.presos.length > 1 &&
                                                 <Button
                                                     variant="contained"
@@ -120,7 +120,7 @@ export default function VideoconferenciaForm(props) {
                                             }
                                         </Grid>
                                         {index == values.presos.length - 1 && (
-                                            <Grid item xs={1}>
+                                            <Grid item xs={6} lg={1}>
                                                 <Button
                                                     variant="contained"
                                                     color="primary"
@@ -142,7 +142,7 @@ export default function VideoconferenciaForm(props) {
             </FieldArray>
             <br />
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <Field
                         fullWidth
                         component={TextField}
