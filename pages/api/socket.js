@@ -1,9 +1,8 @@
 import { Server } from "socket.io";
 
 export default function SocketHandler(req, res) {
-    // It means that socket server was already initialised
     if (res.socket.server.io) {
-        console.log("Socket.io server is already running.");
+        // Socket.io server is already running.
         res.end();
         return;
     }
@@ -11,15 +10,17 @@ export default function SocketHandler(req, res) {
     const io = new Server(res.socket.server);
     res.socket.server.io = io;
 
-    const onConnection = (socket) => {
+    const handleConnection = (socket) => {
+        // Message handler
         socket.on("createdMessage", (msg) => {
             socket.broadcast.emit("newIncomingMessage", msg)
         });
+        socket.on("REGISTER_MEETING", () => {
+            socket.broadcast.emit('REGISTER_MEETING');
+        })
     };
 
-    // Define actions inside
-    io.on("connection", onConnection);
+    io.on("connection", handleConnection);
 
-    console.log("Setting up socket");
     res.end();
 }

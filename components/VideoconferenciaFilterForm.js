@@ -23,7 +23,6 @@ export default function VideoconferenciaFilterForm() {
         const { data } = values;
         if (data != null && !moment(data).isValid()) {
             errors.data = 'Data inválida';
-            console.log(data);
         }
         return errors;
     }

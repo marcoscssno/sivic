@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
@@ -9,6 +9,14 @@ import createEmotionCache from '../src/createEmotionCache';
 import { Provider } from 'react-redux';
 import 'moment/locale/pt-br';
 import moment from 'moment';
+// Socket.io
+import io from "socket.io-client";
+// Axios
+import axios from 'axios';
+// Redux, react-redux and Redux logic
+import { fetchVideoconferenciasByDate } from '../reducers/videoconferenciaSlice'
+
+let socket;
 
 moment.locale('pt-br');
 
@@ -19,6 +27,18 @@ const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
     const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+    const socketInitializer = async () => {
+        // We just call it because we don't need anything else out of it
+        await axios.get("/api/socket");
+        socket = io();
+        socket.on('REGISTER_MEETING', () => {
+            const workingDate = store.getState().videoconferencia.workingDate;
+            store.dispatch(fetchVideoconferenciasByDate(workingDate));
+        })
+    };
+    useEffect(() => {
+        socketInitializer();
+    }, []);
 
     return (
         <CacheProvider value={emotionCache}>

@@ -21,13 +21,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers/videoconferenciaSlice';
 // Custom hook
 import { useAuthentication } from '../../../hooks/useAuthentication';
+// Socket.io
+import io from "socket.io-client";
 
 
 export default function EditarVideoconferenciaPage() {
-    const user = useAuthentication({ redirectTo: '/login' })
-    const router = useRouter()
-    const { id } = router.query
-    const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia)
+    const user = useAuthentication({ redirectTo: '/login' });
+    const router = useRouter();
+    const { id } = router.query;
+    const videoconferencia = useSelector(state => state.videoconferencia.videoconferencia);
+    const socket = io();
     let presos = [
         {
             nome: '',
@@ -91,6 +94,10 @@ export default function EditarVideoconferenciaPage() {
                                         lastUpdatedBy: user._id
                                     }
                                     dispatch(editarVideoconferencia({ id: id, videoconferencia: newVideoconferencia }))
+                                    
+                                    // To do: Emit 'REGISTER_MEEETING' only when state.videoconferencia.success == true;
+                                    socket.emit('REGISTER_MEETING');
+                                    
                                     success && router.push('/')
                                 }
                                 catch (error) {

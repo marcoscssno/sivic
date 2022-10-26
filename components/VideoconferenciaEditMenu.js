@@ -17,10 +17,13 @@ import { useDispatch } from 'react-redux';
 import { excluirVideoconferencia } from '../reducers/videoconferenciaSlice';
 // Moment
 import moment from 'moment';
+// Socket.io
+import io from "socket.io-client";
 
 
 export default function VideoconferenciaEditMenu (props) {
     const [AlertOpen, setAlertOpen] = useState(false);
+    const socket = io();
 
     const handleAlertOpen = () => {
         setAlertOpen(true);
@@ -41,6 +44,11 @@ export default function VideoconferenciaEditMenu (props) {
     };
     const handleExcluir = (id) => {
         dispatch(excluirVideoconferencia(id))
+
+        // To do: Emit 'REGISTER_MEEETING' only when state.videoconferencia.success == true;
+        socket.emit('REGISTER_MEETING');
+
+
         setAlertOpen(false);
         setAnchorEl(null);
     }

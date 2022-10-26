@@ -1,5 +1,5 @@
 // React
-import React from 'react';
+import React, { useEffect } from 'react';
 // Other components
 import Layout from '../../components/Layout'
 import VideoconferenciaForm from '../../components/VideoconferenciaForm';
@@ -19,12 +19,14 @@ import { useDispatch } from 'react-redux';
 import { cadastrarVideoconferencia } from '../../reducers/videoconferenciaSlice'
 // Custom hooks
 import { useAuthentication } from '../../hooks/useAuthentication';
-// Next
 import Router from 'next/router';
+// Socket.io
+import io from "socket.io-client";
 
 export default function CadastrarVideoconferenciaPage() {
     const user = useAuthentication({ redirectTo: '/login' })
     const dispatch = useDispatch();
+    const socket = io();
     return (
         <Layout>
             <Container maxWidth="xl">
@@ -65,6 +67,10 @@ export default function CadastrarVideoconferenciaPage() {
                                         lastUpdatedBy: user._id
                                     }
                                     await dispatch(cadastrarVideoconferencia(videoconferencia))
+                                    
+                                    // To do: Emit 'REGISTER_MEEETING' only when state.videoconferencia.success == true;
+                                    socket.emit('REGISTER_MEETING');
+                                    
                                     Router.push('/');
                                 }
                                 catch (error) {
