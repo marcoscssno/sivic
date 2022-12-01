@@ -23,6 +23,7 @@ import { fetchVideoconferencia, editarVideoconferencia } from '../../../reducers
 import { useAuthentication } from '../../../hooks/useAuthentication';
 // Socket.io
 import io from "socket.io-client";
+import { toTitleCase } from '../../../utils/textHelper';
 
 
 export default function EditarVideoconferenciaPage() {
@@ -86,9 +87,16 @@ export default function EditarVideoconferenciaPage() {
                                     setSubmitting(false);
                                     const newVideoconferencia = {
                                         data_e_hora: moment(moment(values.data).format('DD/MM/YYYY') + ' ' + moment(values.hora).format('HH:mm'), 'DD/MM/YYYY HH:mm', true),
-                                        solicitante: values.solicitante,
-                                        sala: values.sala,
-                                        presos: values.presos,
+                                        solicitante: toTitleCase(values.solicitante),
+                                        sala: toTitleCase(values.sala),
+                                        presos: values.presos.map(preso => {
+                                            return {
+                                                nome: toTitleCase(preso.nome),
+                                                ala: toTitleCase(preso.ala),
+                                                cela: toTitleCase(preso.cela),
+                                                periculosidade: toTitleCase(preso.periculosidade)
+                                            }
+                                        }),
                                         link: values.link,
                                         lastUpdatedAt: moment(),
                                         lastUpdatedBy: user._id

@@ -22,6 +22,7 @@ import { useAuthentication } from '../../hooks/useAuthentication';
 import Router from 'next/router';
 // Socket.io
 import io from "socket.io-client";
+import { toTitleCase } from '../../utils/textHelper';
 
 export default function CadastrarVideoconferenciaPage() {
     const user = useAuthentication({ redirectTo: '/login' })
@@ -57,9 +58,16 @@ export default function CadastrarVideoconferenciaPage() {
                                     setSubmitting(false);
                                     const videoconferencia = {
                                         data_e_hora: moment(moment(values.data).format('DD/MM/YYYY') + ' ' + moment(values.hora).format('HH:mm'), 'DD/MM/YYYY HH:mm', true),
-                                        solicitante: values.solicitante,
-                                        sala: values.sala,
-                                        presos: values.presos,
+                                        solicitante: toTitleCase(values.solicitante),
+                                        sala: toTitleCase(values.sala),
+                                        presos: values.presos.map(preso => {
+                                            return {
+                                                nome: toTitleCase(preso.nome),
+                                                ala: toTitleCase(preso.ala),
+                                                cela: toTitleCase(preso.cela),
+                                                periculosidade: toTitleCase(preso.periculosidade)
+                                            }
+                                        }),
                                         link: values.link,
                                         ceatedAt: moment(),
                                         createdBy: user._id,
