@@ -3,7 +3,7 @@ import React from 'react';
 // Other components
 import VideoconferenciaEditMenu from './VideoconferenciaEditMenu';
 // Utils
-import Link from '../src/Link';
+import Link from '../Link';
 // Mui and Mui X
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';

@@ -11,7 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
 // Utils
-import Link from '../src/Link';
+import Link from '../Link';
 // Redux and Redux logic
 import { useDispatch } from 'react-redux';
 import { excluirVideoconferencia } from '../reducers/videoconferenciaSlice';

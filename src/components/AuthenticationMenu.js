@@ -1,17 +1,17 @@
 // React
 import React from 'react';
 // Mui
-import Button from '@mui/material/Button';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 // Redux Logic
 import { useAuthentication } from '../hooks/useAuthentication';
 // Redux
 import { useSelector } from 'react-redux';
 // Utils
-import Link from '../src/Link'
+import Link from '../Link';
 
 const LoadingAuthentication = () => {
     return <CircularProgress size={25} sx={{ ml: 1 }} color="inherit" />
