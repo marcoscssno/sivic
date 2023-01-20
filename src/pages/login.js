@@ -1,27 +1,25 @@
 // React
-import React, { useState } from 'react';
+import React from 'react';
 // Other components
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
 // Mui
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import { default as Grid, default as Stack } from '@mui/material/Grid';
 import LinearProgress from '@mui/material/LinearProgress';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 // Formik
 import { useFormik } from 'formik';
 // Redux, react-redux and Redux logic
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // Axios
 import axios from 'axios';
 // Custom hook
 import { useAuthentication } from '../hooks/useAuthentication';
 // Next
-import Router from 'next/router'
+import Router from 'next/router';
 
 export default function LoginPage() {
     useAuthentication({ redirectTo: '/', redirectIfFound: true })

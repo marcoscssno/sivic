@@ -2,26 +2,26 @@
 import React, { useEffect } from 'react';
 // Other components
 import Layout from '../components/Layout';
-import VideoconferenciaToolbar from '../components/VideoconferenciaToolbar';
 import VideoconferenciaFilterToolbar from '../components/VideoconferenciaFilterToolbar';
+import VideoconferenciaToolbar from '../components/VideoconferenciaToolbar';
 // Utils
-import Link from '../src/Link';
+import Link from '../Link';
 // Mui and Mui X
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 // Redux and Redux logic
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchVideoconferencias } from '../reducers/videoconferenciaSlice'
+import { useDispatch, useSelector } from 'react-redux';
 import { useAuthentication } from '../hooks/useAuthentication';
+import { fetchVideoconferencias } from '../reducers/videoconferenciaSlice';
 
 export default function IndexPage() {
     const user = useAuthentication();

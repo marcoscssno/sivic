@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // Other components
 import VideoconferenciaFilterForm from '../components/VideoconferenciaFilterForm';
 // Utils
-import Link from '../src/Link';
+import Link from '../Link';
 // Mui and Mui X
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
