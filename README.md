@@ -11,29 +11,46 @@ A web application for scheduling videoconference calls.
 
 **Step 1:** Clone this repository
 
-`git clone https://github.com/marcoscssno/sivic.git`
+```bash
+git clone https://github.com/marcoscssno/sivic.git
+```
 
 **Step 2:** Change directory to `sivic` folder
 
-`cd sivic`
+```bash
+cd sivic
+```
 
 **Step 3:** Set up MONGODB_URI and TOKEN_SECRET within `.env.development` and `.env.production` files;
 
+```
+MONGODB_URI=mongodb://localhost:27017/sivic
+TOKEN_SECRET= # 32 characters long secret
+```
+
 **Step 4:** Build Docker image
 
-`docker-compose -f docker-compose.dev.yml build`
+```bash
+docker-compose -f ./docker/docker-compose.dev.yml build
+```
 
 or
 
-`docker-compose -f docker-compose.prod.yml build`
+```bash
+docker-compose -f ./docker/docker-compose.prod.yml build
+```
 
 **Step 5:** Run Docker containers
 
-`docker-compose -f docker-compose.dev.yml up -d`
+```bash
+docker-compose -f ./docker/docker-compose.dev.yml up -d
+```
 
 or
 
-`docker-compose -f docker-compose.prod.yml up -d`
+```bash
+docker-compose -f ./docker/docker-compose.prod.yml up -d
+```
 
 ---
 
@@ -43,20 +60,43 @@ or
 
 **Step 1:** Clone this repository
 
-`git clone https://github.com/marcoscssno/sivic.git`
+```bash
+git clone https://github.com/marcoscssno/sivic.git
+```
 
 **Step 2:** Change directory to `sivic` folder
 
-`cd sivic`
+```bash
+cd sivic
+```
 
 **Step 3:** Set up MONGODB_URI and TOKEN_SECRET within `.env.development` and `.env.production` files;
 
+```
+MONGODB_URI=mongodb://localhost:27017/sivic
+TOKEN_SECRET= # 32 characters long secret
+```
+
 **Step 4:** Run MongoDB server;
 
-**Step 5:** Run the commands below;
+**Step 5:** Install the dependencies;
 
 ```bash
 yarn install
+```
+
+**Step 6:** Run the application.
+
+For development:
+
+```bash
+yarn dev
+```
+
+For production:
+
+```bash
+yarn start
 yarn dev
 ```
 
