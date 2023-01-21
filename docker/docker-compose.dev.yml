@@ -26,7 +26,7 @@ services:
     networks:
       - my_network
     expose:
-      - 27017:27017
+      - 27017
   # Add more containers below (nginx, postgres, etc.)
 
 # Define a network, which allows containers to communicate
