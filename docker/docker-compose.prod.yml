@@ -4,10 +4,10 @@ services:
   next-app:
     container_name: next-app
     env_file:
-      - ../.env.production
+      - .env.production
     build:
-      context: ..
-      dockerfile: ./docker/prod.Dockerfile
+      context: .
+      dockerfile: prod.Dockerfile
     restart: always
     ports:
       - 3000:3000
@@ -19,12 +19,12 @@ services:
     restart: always
     image: mongo:4.2.0
     volumes:
-      - ../data:/data/db
+      - ./data:/data/db
     networks:
       - my_network
     expose:
       - 27017
-  # Add more containers below (nginx, postgres, etc.)
+ # Add more containers below (nginx, postgres, etc.)
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
