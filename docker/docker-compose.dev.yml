@@ -4,13 +4,13 @@ services:
   next-app:
     container_name: next-app
     env_file:
-      - .env.development
+      - ../.env.development
     build:
-      context: .
-      dockerfile: dev.Dockerfile
+      context: ../
+      dockerfile: docker/dev.Dockerfile
     volumes:
-      - ./src:/app/src
-      - ./public:/app/public
+      - ../src:/app/src
+      - ../public:/app/public
     depends_on:
       - mongodb
     restart: always
@@ -22,11 +22,10 @@ services:
     restart: always
     image: mongo:4.2.0
     volumes:
-      - ./data:/data/db
+      - ../data:/data/db
     networks:
       - my_network
-    expose:
-      - 27017:27017
+
   # Add more containers below (nginx, postgres, etc.)
 
 # Define a network, which allows containers to communicate
