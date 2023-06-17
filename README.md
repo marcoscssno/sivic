@@ -40,7 +40,13 @@ or
 docker-compose -f ./docker/docker-compose.prod.yml build
 ```
 
-**Step 5:** Run Docker containers
+**Step 5:** Create Docker network
+
+```bash
+docker network create my_network
+```
+
+**Step 6:** Run Docker containers
 
 ```bash
 docker-compose -f ./docker/docker-compose.dev.yml up -d
