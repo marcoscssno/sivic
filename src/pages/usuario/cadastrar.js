@@ -9,9 +9,12 @@ import Grid from '@mui/material/Grid';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-mui';
 import { useSelector, useDispatch } from 'react-redux';
-import { createUser } from '../../reducers/userSlice'
+import { createUser } from '../../reducers/userSlice';
+import { useAuthentication } from '../../hooks/useAuthentication';
+import Router from 'next/router';
 
 export default function CreateUserPage() {
+    const user = useAuthentication({ redirectTo: '/login' })
     const loading = useSelector(state => state.user.loading)
     const error = useSelector(state => state.user.error)
     const dispatch = useDispatch();
@@ -40,6 +43,7 @@ export default function CreateUserPage() {
                                         password: values.password
                                     }
                                     dispatch(createUser(userData))
+                                    Router.push('/');
                                 }
                                 catch (error) {
                                     console.log(error)
